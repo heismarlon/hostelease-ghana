@@ -25,7 +25,7 @@ const PROVIDERS = [
 ] as const;
 
 function Booking() {
-  const { hostel } = Route.useLoaderData();
+  const { hostel } = Route.useLoaderData() as { hostel: import("@/lib/hostels").Hostel };
   const navigate = useNavigate();
   const [step, setStep] = useState<"summary" | "pay" | "done">("summary");
   const [provider, setProvider] = useState<(typeof PROVIDERS)[number]["id"]>("mtn");
