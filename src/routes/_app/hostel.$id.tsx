@@ -32,7 +32,7 @@ export const Route = createFileRoute("/_app/hostel/$id")({
 });
 
 function HostelDetail() {
-  const { hostel } = Route.useLoaderData();
+  const { hostel } = Route.useLoaderData() as { hostel: import("@/lib/hostels").Hostel };
   const navigate = useNavigate();
   const [photo, setPhoto] = useState(0);
   const [saved, setSaved] = useState(false);
