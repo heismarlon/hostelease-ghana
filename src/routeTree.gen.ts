@@ -9,50 +9,267 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AppRouteImport } from './routes/_app'
+import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as AppSearchRouteImport } from './routes/_app/search'
+import { Route as AppSavedRouteImport } from './routes/_app/saved'
+import { Route as AppProfileRouteImport } from './routes/_app/profile'
+import { Route as AppMessagesRouteImport } from './routes/_app/messages'
+import { Route as AppCompareRouteImport } from './routes/_app/compare'
+import { Route as AppHostelIdRouteImport } from './routes/_app/hostel.$id'
+import { Route as AppBookingIdRouteImport } from './routes/_app/booking.$id'
 
-const IndexRoute = IndexRouteImport.update({
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSearchRoute = AppSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSavedRoute = AppSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMessagesRoute = AppMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCompareRoute = AppCompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHostelIdRoute = AppHostelIdRouteImport.update({
+  id: '/hostel/$id',
+  path: '/hostel/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBookingIdRoute = AppBookingIdRouteImport.update({
+  id: '/booking/$id',
+  path: '/booking/$id',
+  getParentRoute: () => AppRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof AppIndexRoute
+  '/auth': typeof AuthRoute
+  '/onboarding': typeof OnboardingRoute
+  '/compare': typeof AppCompareRoute
+  '/messages': typeof AppMessagesRoute
+  '/profile': typeof AppProfileRoute
+  '/saved': typeof AppSavedRoute
+  '/search': typeof AppSearchRoute
+  '/booking/$id': typeof AppBookingIdRoute
+  '/hostel/$id': typeof AppHostelIdRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/onboarding': typeof OnboardingRoute
+  '/compare': typeof AppCompareRoute
+  '/messages': typeof AppMessagesRoute
+  '/profile': typeof AppProfileRoute
+  '/saved': typeof AppSavedRoute
+  '/search': typeof AppSearchRoute
+  '/': typeof AppIndexRoute
+  '/booking/$id': typeof AppBookingIdRoute
+  '/hostel/$id': typeof AppHostelIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/onboarding': typeof OnboardingRoute
+  '/_app/compare': typeof AppCompareRoute
+  '/_app/messages': typeof AppMessagesRoute
+  '/_app/profile': typeof AppProfileRoute
+  '/_app/saved': typeof AppSavedRoute
+  '/_app/search': typeof AppSearchRoute
+  '/_app/': typeof AppIndexRoute
+  '/_app/booking/$id': typeof AppBookingIdRoute
+  '/_app/hostel/$id': typeof AppHostelIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/onboarding'
+    | '/compare'
+    | '/messages'
+    | '/profile'
+    | '/saved'
+    | '/search'
+    | '/booking/$id'
+    | '/hostel/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/auth'
+    | '/onboarding'
+    | '/compare'
+    | '/messages'
+    | '/profile'
+    | '/saved'
+    | '/search'
+    | '/'
+    | '/booking/$id'
+    | '/hostel/$id'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/auth'
+    | '/onboarding'
+    | '/_app/compare'
+    | '/_app/messages'
+    | '/_app/profile'
+    | '/_app/saved'
+    | '/_app/search'
+    | '/_app/'
+    | '/_app/booking/$id'
+    | '/_app/hostel/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  OnboardingRoute: typeof OnboardingRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/': {
+      id: '/_app/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/search': {
+      id: '/_app/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof AppSearchRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/saved': {
+      id: '/_app/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof AppSavedRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/messages': {
+      id: '/_app/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof AppMessagesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/compare': {
+      id: '/_app/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof AppCompareRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/hostel/$id': {
+      id: '/_app/hostel/$id'
+      path: '/hostel/$id'
+      fullPath: '/hostel/$id'
+      preLoaderRoute: typeof AppHostelIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/booking/$id': {
+      id: '/_app/booking/$id'
+      path: '/booking/$id'
+      fullPath: '/booking/$id'
+      preLoaderRoute: typeof AppBookingIdRouteImport
+      parentRoute: typeof AppRoute
     }
   }
 }
 
+interface AppRouteChildren {
+  AppCompareRoute: typeof AppCompareRoute
+  AppMessagesRoute: typeof AppMessagesRoute
+  AppProfileRoute: typeof AppProfileRoute
+  AppSavedRoute: typeof AppSavedRoute
+  AppSearchRoute: typeof AppSearchRoute
+  AppIndexRoute: typeof AppIndexRoute
+  AppBookingIdRoute: typeof AppBookingIdRoute
+  AppHostelIdRoute: typeof AppHostelIdRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppCompareRoute: AppCompareRoute,
+  AppMessagesRoute: AppMessagesRoute,
+  AppProfileRoute: AppProfileRoute,
+  AppSavedRoute: AppSavedRoute,
+  AppSearchRoute: AppSearchRoute,
+  AppIndexRoute: AppIndexRoute,
+  AppBookingIdRoute: AppBookingIdRoute,
+  AppHostelIdRoute: AppHostelIdRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRoute,
+  OnboardingRoute: OnboardingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
