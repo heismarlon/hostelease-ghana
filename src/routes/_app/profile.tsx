@@ -17,11 +17,11 @@ function Profile() {
       <header className="bg-primary px-5 pb-6 pt-12 text-primary-foreground">
         <div className="flex items-center gap-4">
           <div className="grid h-16 w-16 place-items-center rounded-full bg-gold font-display text-2xl font-bold text-gold-foreground">
-            AM
+            MB
           </div>
           <div className="min-w-0">
-            <h1 className="truncate font-display text-xl font-semibold">Akua Mensah</h1>
-            <p className="truncate text-xs text-primary-foreground/70">BSc Nursing · L300 · UCC</p>
+            <h1 className="truncate font-display text-xl font-semibold">Marlon Bilson</h1>
+            <p className="truncate text-xs text-primary-foreground/70">BSc Computer Science · L300 · UCC</p>
             <p className="mt-1 inline-flex items-center gap-1 text-[11px] font-medium text-gold">
               <ShieldCheck className="h-3 w-3" /> Verified student
             </p>
