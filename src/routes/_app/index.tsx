@@ -28,7 +28,7 @@ function Discover() {
               University of Cape Coast
             </p>
             <h1 className="mt-1 font-display text-2xl font-semibold leading-tight">
-              Hi Akua, find your<br />next home <span className="text-gold">near campus</span>
+              Hi Marlon, find your<br />next home <span className="text-gold">near campus</span>
             </h1>
           </div>
           <button type="button" className="grid h-10 w-10 place-items-center rounded-full bg-white/10" aria-label="Notifications">
