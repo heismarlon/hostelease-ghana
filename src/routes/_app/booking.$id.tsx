@@ -243,8 +243,8 @@ function Booking() {
         <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md border-t border-border bg-card/95 px-5 py-3 backdrop-blur safe-bottom">
           <button
             onClick={() => setStep(step === "summary" ? "pay" : "done")}
-            disabled={step === "pay" && phone.length < 10}
-            className="w-full rounded-2xl bg-gold py-3.5 text-sm font-bold text-gold-foreground shadow-gold transition-transform active:scale-[0.98] disabled:opacity-50 disabled:shadow-none"
+            disabled={step === "pay" && payDisabled}
+            className="w-full rounded-2xl bg-primary py-3.5 text-sm font-bold text-primary-foreground shadow-gold transition-transform active:scale-[0.98] disabled:opacity-50 disabled:shadow-none"
           >
             {step === "summary" ? `Continue to payment · ${formatGHS(total)}` : `Pay ${formatGHS(total)}`}
           </button>
@@ -262,3 +262,21 @@ function Row({ label, value, muted, bold }: { label: string; value: string; mute
     </div>
   );
 }
+
+function Field({
+  label, value, onChange, placeholder, type = "text",
+}: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string }) {
+  return (
+    <label className="block">
+      <span className="text-xs font-semibold">{label}</span>
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="mt-1.5 w-full rounded-2xl border border-input bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+      />
+    </label>
+  );
+}
+
