@@ -56,9 +56,15 @@ function Profile() {
           <Row icon={LogOut} label="Sign out" danger />
         </div>
       </section>
+
+      <section className="px-5 pt-6 pb-4 text-center">
+        <p className="font-script text-5xl leading-none text-gold">stay easy</p>
+        <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">HostelEase · Ghana</p>
+      </section>
     </div>
   );
 }
+
 
 function Row({
   icon: Icon,
