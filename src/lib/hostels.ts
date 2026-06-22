@@ -1,8 +1,24 @@
-import h1 from "@/assets/hostel-1.jpg";
-import h2 from "@/assets/hostel-2.jpg";
-import h3 from "@/assets/hostel-3.jpg";
-import h4 from "@/assets/hostel-4.jpg";
-import h5 from "@/assets/hostel-5.jpg";
+import img7686 from "@/assets/uploads/IMG_7686.jpeg.asset.json";
+import img7684 from "@/assets/uploads/IMG_7684.jpeg.asset.json";
+import img7683 from "@/assets/uploads/IMG_7683.jpeg.asset.json";
+import img7682 from "@/assets/uploads/IMG_7682.jpeg.asset.json";
+import img7681 from "@/assets/uploads/IMG_7681.jpeg.asset.json";
+import img7675 from "@/assets/uploads/IMG_7675.jpeg.asset.json";
+import img7676 from "@/assets/uploads/IMG_7676.jpeg.asset.json";
+import img7673 from "@/assets/uploads/IMG_7673.jpeg.asset.json";
+import img7671 from "@/assets/uploads/IMG_7671.jpeg.asset.json";
+import img7678 from "@/assets/uploads/IMG_7678.jpeg.asset.json";
+
+const exterior1 = img7686.url; // beige balconies exterior
+const exterior2 = img7684.url; // night atrium
+const exterior3 = img7676.url; // orange block exterior
+const roomTwin1 = img7683.url; // dorm twin beds with desks
+const roomTwin2 = img7682.url; // checkered twin room with AC
+const roomTwin3 = img7678.url; // grey concrete twin room
+const roomSingle1 = img7681.url; // single dark bed posters
+const roomSingle2 = img7675.url; // small single bed white
+const roomSelf1 = img7673.url; // self-contained with TV + fridge
+const roomSelf2 = img7671.url; // studio with sofa & TV
 
 export type Availability = "available" | "few" | "full";
 export type RoomType = "single" | "shared" | "self-contained";
@@ -51,7 +67,7 @@ export const HOSTELS: Hostel[] = [
     availability: "few",
     roomTypes: ["single", "shared"],
     amenities: ["Wi-Fi", "24/7 Water", "Security", "Study Area", "Backup Power"],
-    photos: [h1, h2, h5, h3],
+    photos: [exterior1, roomTwin2, roomSingle2, exterior3],
     description:
       "A calm, well-managed hostel popular with serious students. Backup power keeps Wi-Fi on through ECG outages, and the on-site study lounge stays open until midnight.",
     owner: { name: "Mr. Kweku Annan", responseRate: 96 },
@@ -74,8 +90,8 @@ export const HOSTELS: Hostel[] = [
     availability: "available",
     roomTypes: ["self-contained"],
     amenities: ["Wi-Fi", "24/7 Water", "Security", "Kitchen", "AC", "Backup Power"],
-    photos: [h5, h4, h2, h1],
-    description: "Modern self-contained units with private bathroom, kitchenette and AC. Best for L300+ students who want privacy.",
+    photos: [roomSelf1, roomSelf2, exterior3, exterior1],
+    description: "Modern self-contained units with private bathroom, kitchenette, fridge, TV and AC. Best for L300+ students who want privacy.",
     owner: { name: "Adwoa Mensimah", responseRate: 99 },
     reviews: [
       { id: "r1", author: "Kojo A.", program: "MBChB, L400", rating: 5, comment: "Worth every cedi. The AC saved me during heat season.", date: "Apr 2025" },
@@ -95,7 +111,7 @@ export const HOSTELS: Hostel[] = [
     availability: "available",
     roomTypes: ["shared"],
     amenities: ["Wi-Fi", "Security", "Study Area"],
-    photos: [h3, h1, h2],
+    photos: [roomSingle2, roomTwin2, exterior3],
     description: "Budget-friendly shared rooms (2 per room). Tight community, walking distance to Old Site lecture halls.",
     owner: { name: "Mama Esi", responseRate: 88 },
     reviews: [
@@ -116,7 +132,7 @@ export const HOSTELS: Hostel[] = [
     availability: "full",
     roomTypes: ["single", "self-contained"],
     amenities: ["Wi-Fi", "24/7 Water", "Security", "Kitchen", "AC", "Pool", "Gym", "Backup Power"],
-    photos: [h4, h5, h2, h1],
+    photos: [exterior2, roomSelf1, roomTwin3, exterior1],
     description: "Premium hostel with pool, gym and on-site cafe. Shuttle to campus every hour.",
     owner: { name: "Valco Properties Ltd.", responseRate: 100 },
     reviews: [
@@ -137,10 +153,115 @@ export const HOSTELS: Hostel[] = [
     availability: "few",
     roomTypes: ["single", "shared"],
     amenities: ["Wi-Fi", "24/7 Water", "Security", "Study Area"],
-    photos: [h2, h1, h3],
+    photos: [roomSingle2, roomTwin2, exterior1],
     description: "Female-only hostel run by sisters from the OLA campus. Strict security and curfew at 11pm.",
     owner: { name: "Sister Akosua", responseRate: 92 },
     reviews: [],
+  },
+  {
+    id: "ayensu-residence",
+    name: "Ayensu Residence",
+    tagline: "Brand-new twin rooms with AC, perfect for roommates",
+    area: "Science",
+    distanceKm: 1.1,
+    pricePerSemester: 3800,
+    deposit: 600,
+    rating: 4.7,
+    reviewsCount: 64,
+    verified: true,
+    availability: "available",
+    roomTypes: ["shared"],
+    amenities: ["Wi-Fi", "24/7 Water", "Security", "AC", "Backup Power", "Study Area"],
+    photos: [roomTwin3, exterior2, roomTwin2],
+    description: "Newly built block with spacious twin rooms, built-in shelves, AC and a private balcony per unit. Great for pairs of friends rooming together.",
+    owner: { name: "Mr. Selorm Dogbe", responseRate: 97 },
+    reviews: [
+      { id: "r1", author: "Esi P.", program: "BSc Biochem, L200", rating: 5, comment: "Room is brand new. AC works perfectly through the heat.", date: "May 2025" },
+    ],
+  },
+  {
+    id: "cape-coast-vista",
+    name: "Cape Coast Vista",
+    tagline: "Premium dorms with city views and study desks",
+    area: "Kakumdo",
+    distanceKm: 2.1,
+    pricePerSemester: 5200,
+    deposit: 900,
+    rating: 4.8,
+    reviewsCount: 41,
+    verified: true,
+    availability: "few",
+    roomTypes: ["shared", "single"],
+    amenities: ["Wi-Fi", "24/7 Water", "Security", "AC", "Kitchen", "Backup Power", "Study Area"],
+    photos: [roomTwin1, exterior2, roomSelf2],
+    description: "High-rise residence with panoramic Cape Coast views, in-room study desks, fast fibre Wi-Fi, and a 24-hour reception. Shuttle to UCC main gate every 30 minutes.",
+    owner: { name: "Vista Living Ltd.", responseRate: 98 },
+    reviews: [
+      { id: "r1", author: "Kwabena O.", program: "BSc Computer Science, L300", rating: 5, comment: "The view and the Wi-Fi are unmatched. Best place to grind code.", date: "Apr 2025" },
+    ],
+  },
+  {
+    id: "abura-budget-hall",
+    name: "Abura Budget Hall",
+    tagline: "Simple single rooms under GHS 2k",
+    area: "Abura",
+    distanceKm: 2.4,
+    pricePerSemester: 1500,
+    deposit: 250,
+    rating: 4.0,
+    reviewsCount: 95,
+    verified: false,
+    availability: "available",
+    roomTypes: ["single"],
+    amenities: ["Wi-Fi", "Security"],
+    photos: [roomSingle2, exterior3],
+    description: "No-frills single rooms for students on a strict budget. Communal kitchen and shared bathrooms. Trotro to campus is GHS 3.",
+    owner: { name: "Mr. Atta Mensah", responseRate: 78 },
+    reviews: [
+      { id: "r1", author: "Joojo T.", program: "BA Sociology, L100", rating: 4, comment: "Cheapest I could find. Honest landlord, basic but clean.", date: "Feb 2025" },
+    ],
+  },
+  {
+    id: "north-campus-suites",
+    name: "North Campus Suites",
+    tagline: "Modern self-contained studios beside North Campus",
+    area: "North Campus",
+    distanceKm: 0.3,
+    pricePerSemester: 5500,
+    deposit: 1000,
+    rating: 4.9,
+    reviewsCount: 78,
+    verified: true,
+    availability: "few",
+    roomTypes: ["self-contained"],
+    amenities: ["Wi-Fi", "24/7 Water", "Security", "Kitchen", "AC", "Backup Power"],
+    photos: [roomSelf2, roomSelf1, exterior2],
+    description: "Walk-to-class studios with private bath, kitchenette, smart TV and 24/7 power backup. Most convenient location for North Campus faculties.",
+    owner: { name: "North Campus Holdings", responseRate: 99 },
+    reviews: [
+      { id: "r1", author: "Ama K.", program: "LLB, L300", rating: 5, comment: "Roll out of bed and I'm in class. Worth the price.", date: "Mar 2025" },
+    ],
+  },
+  {
+    id: "creative-corner",
+    name: "Creative Corner Hostel",
+    tagline: "Cosy singles for artsy students near OLA",
+    area: "OLA",
+    distanceKm: 0.7,
+    pricePerSemester: 2400,
+    deposit: 350,
+    rating: 4.4,
+    reviewsCount: 52,
+    verified: true,
+    availability: "available",
+    roomTypes: ["single"],
+    amenities: ["Wi-Fi", "Security", "Study Area", "24/7 Water"],
+    photos: [roomSingle1, roomSingle2, exterior1],
+    description: "Small, character-filled singles popular with arts, theatre and design students. Big windows, quiet block, friendly community.",
+    owner: { name: "Auntie Naa", responseRate: 94 },
+    reviews: [
+      { id: "r1", author: "Selasi D.", program: "BFA Painting, L200", rating: 5, comment: "Finally a room with personality. Light is amazing for sketching.", date: "Jan 2025" },
+    ],
   },
 ];
 
