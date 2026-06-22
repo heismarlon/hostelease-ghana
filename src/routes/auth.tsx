@@ -39,6 +39,7 @@ function Auth() {
         className="mt-6 space-y-3"
         onSubmit={(e) => {
           e.preventDefault();
+          if (typeof window !== "undefined") window.localStorage.setItem("he_signed_in", "1");
           navigate({ to: "/" });
         }}
       >
