@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, Check, Clock, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Building2, Check, Clock, CreditCard, ShieldCheck, Smartphone } from "lucide-react";
 import { formatGHS, getHostel } from "@/lib/hostels";
 import { cn } from "@/lib/utils";
 
@@ -18,11 +18,22 @@ export const Route = createFileRoute("/_app/booking/$id")({
   component: Booking,
 });
 
-const PROVIDERS = [
+const SERVICE_FEE_RATE = 0.05;
+
+type Method = "momo" | "bank" | "card";
+
+const METHODS: { id: Method; name: string; sub: string; icon: typeof Smartphone }[] = [
+  { id: "momo", name: "Mobile Money", sub: "MTN · Telecel · AirtelTigo", icon: Smartphone },
+  { id: "bank", name: "Bank account", sub: "GCB, Ecobank, Fidelity & more", icon: Building2 },
+  { id: "card", name: "Credit / Debit card", sub: "Visa, Mastercard", icon: CreditCard },
+];
+
+const MOMO_PROVIDERS = [
   { id: "mtn", name: "MTN MoMo", color: "bg-warning text-warning-foreground", initials: "MTN" },
   { id: "telecel", name: "Telecel Cash", color: "bg-destructive text-destructive-foreground", initials: "TC" },
   { id: "airteltigo", name: "AirtelTigo Money", color: "bg-primary text-primary-foreground", initials: "AT" },
 ] as const;
+
 
 function Booking() {
   const { hostel } = Route.useLoaderData() as { hostel: import("@/lib/hostels").Hostel };
