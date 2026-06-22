@@ -19,8 +19,10 @@ function Profile() {
     navigate({ to: "/auth" });
   };
 
+  return (
     <div className="space-y-5 pb-6">
-      <header className="bg-primary px-5 pb-6 pt-12 text-primary-foreground">
+      <header className="bg-hero-gradient px-5 pb-6 pt-12 text-white">
+
         <div className="flex items-center gap-4">
           <div className="grid h-16 w-16 place-items-center rounded-full bg-gold font-display text-2xl font-bold text-gold-foreground">
             MB
