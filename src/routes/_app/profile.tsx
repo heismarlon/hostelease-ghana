@@ -1,5 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ChevronRight, CreditCard, Gift, Globe, Heart, LogOut, Moon, ShieldCheck, Users } from "lucide-react";
+
 
 export const Route = createFileRoute("/_app/profile")({
   head: () => ({ meta: [{ title: "Profile — HostelEase" }] }),
@@ -12,7 +13,12 @@ const BOOKINGS = [
 ];
 
 function Profile() {
-  return (
+  const navigate = useNavigate();
+  const signOut = () => {
+    if (typeof window !== "undefined") window.localStorage.removeItem("he_signed_in");
+    navigate({ to: "/auth" });
+  };
+
     <div className="space-y-5 pb-6">
       <header className="bg-primary px-5 pb-6 pt-12 text-primary-foreground">
         <div className="flex items-center gap-4">
