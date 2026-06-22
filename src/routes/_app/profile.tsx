@@ -61,7 +61,7 @@ function Profile() {
           <Row icon={Gift} label="Refer & earn GHS 50" />
           <Row icon={Globe} label="Language" value="English" />
           <Row icon={Moon} label="Dark mode" value="System" />
-          <Row icon={LogOut} label="Sign out" danger />
+          <Row icon={LogOut} label="Sign out" danger onClick={signOut} />
         </div>
       </section>
 
@@ -81,6 +81,7 @@ function Row({
   badge,
   danger,
   to,
+  onClick,
 }: {
   icon: typeof Heart;
   label: string;
@@ -88,6 +89,7 @@ function Row({
   badge?: string;
   danger?: boolean;
   to?: "/saved";
+  onClick?: () => void;
 }) {
   const content = (
     <div className="flex items-center gap-3 px-4 py-3.5 [&+&]:border-t [&+&]:border-border">
@@ -100,5 +102,8 @@ function Row({
       {!danger && <ChevronRight className="h-4 w-4 text-muted-foreground" />}
     </div>
   );
-  return to ? <Link to={to} className="block border-t border-border first:border-t-0">{content}</Link> : <div className="border-t border-border first:border-t-0">{content}</div>;
+  if (to) return <Link to={to} className="block border-t border-border first:border-t-0">{content}</Link>;
+  if (onClick) return <button type="button" onClick={onClick} className="block w-full text-left border-t border-border first:border-t-0">{content}</button>;
+  return <div className="border-t border-border first:border-t-0">{content}</div>;
 }
+
