@@ -1,5 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ChevronRight, CreditCard, Gift, Globe, Heart, LogOut, Moon, ShieldCheck, Users } from "lucide-react";
+
 
 export const Route = createFileRoute("/_app/profile")({
   head: () => ({ meta: [{ title: "Profile — HostelEase" }] }),
@@ -12,9 +13,16 @@ const BOOKINGS = [
 ];
 
 function Profile() {
+  const navigate = useNavigate();
+  const signOut = () => {
+    if (typeof window !== "undefined") window.localStorage.removeItem("he_signed_in");
+    navigate({ to: "/auth" });
+  };
+
   return (
     <div className="space-y-5 pb-6">
-      <header className="bg-primary px-5 pb-6 pt-12 text-primary-foreground">
+      <header className="bg-hero-gradient px-5 pb-6 pt-12 text-white">
+
         <div className="flex items-center gap-4">
           <div className="grid h-16 w-16 place-items-center rounded-full bg-gold font-display text-2xl font-bold text-gold-foreground">
             MB
@@ -53,12 +61,18 @@ function Profile() {
           <Row icon={Gift} label="Refer & earn GHS 50" />
           <Row icon={Globe} label="Language" value="English" />
           <Row icon={Moon} label="Dark mode" value="System" />
-          <Row icon={LogOut} label="Sign out" danger />
+          <Row icon={LogOut} label="Sign out" danger onClick={signOut} />
         </div>
+      </section>
+
+      <section className="px-5 pt-6 pb-4 text-center">
+        <p className="font-script text-5xl leading-none text-gold">stay easy</p>
+        <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">HostelEase · Ghana</p>
       </section>
     </div>
   );
 }
+
 
 function Row({
   icon: Icon,
@@ -67,6 +81,7 @@ function Row({
   badge,
   danger,
   to,
+  onClick,
 }: {
   icon: typeof Heart;
   label: string;
@@ -74,6 +89,7 @@ function Row({
   badge?: string;
   danger?: boolean;
   to?: "/saved";
+  onClick?: () => void;
 }) {
   const content = (
     <div className="flex items-center gap-3 px-4 py-3.5 [&+&]:border-t [&+&]:border-border">
@@ -86,5 +102,8 @@ function Row({
       {!danger && <ChevronRight className="h-4 w-4 text-muted-foreground" />}
     </div>
   );
-  return to ? <Link to={to} className="block border-t border-border first:border-t-0">{content}</Link> : <div className="border-t border-border first:border-t-0">{content}</div>;
+  if (to) return <Link to={to} className="block border-t border-border first:border-t-0">{content}</Link>;
+  if (onClick) return <button type="button" onClick={onClick} className="block w-full text-left border-t border-border first:border-t-0">{content}</button>;
+  return <div className="border-t border-border first:border-t-0">{content}</div>;
 }
+
