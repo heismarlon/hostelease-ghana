@@ -39,9 +39,30 @@ function Booking() {
   const { hostel } = Route.useLoaderData() as { hostel: import("@/lib/hostels").Hostel };
   const navigate = useNavigate();
   const [step, setStep] = useState<"summary" | "pay" | "done">("summary");
-  const [provider, setProvider] = useState<(typeof PROVIDERS)[number]["id"]>("mtn");
+  const [method, setMethod] = useState<Method>("momo");
+  const [momoProvider, setMomoProvider] = useState<(typeof MOMO_PROVIDERS)[number]["id"]>("mtn");
   const [phone, setPhone] = useState("");
-  const total = hostel.pricePerSemester + hostel.deposit;
+  const [bank, setBank] = useState("GCB Bank");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [cardCvc, setCardCvc] = useState("");
+
+  const subtotal = hostel.pricePerSemester + hostel.deposit;
+  const serviceFee = Math.round(subtotal * SERVICE_FEE_RATE);
+  const total = subtotal + serviceFee;
+
+  const payDisabled =
+    (method === "momo" && phone.length < 10) ||
+    (method === "bank" && accountNumber.length < 8) ||
+    (method === "card" && (cardNumber.length < 12 || cardExpiry.length < 4 || cardCvc.length < 3));
+
+  const methodLabel =
+    method === "momo"
+      ? MOMO_PROVIDERS.find((p) => p.id === momoProvider)?.name ?? "Mobile Money"
+      : method === "bank"
+        ? `${bank} • ****${accountNumber.slice(-4)}`
+        : `Card ****${cardNumber.slice(-4)}`;
 
   return (
     <div className="min-h-screen bg-background">
@@ -53,8 +74,8 @@ function Booking() {
         >
           <ArrowLeft className="h-4 w-4" />
         </button>
-        <h1 className="font-display text-xl font-semibold">
-          {step === "summary" ? "Confirm reservation" : step === "pay" ? "Mobile Money" : "Booked!"}
+        <h1 className="font-display text-xl font-bold">
+          {step === "summary" ? "Confirm reservation" : step === "pay" ? "Choose payment" : "Booked!"}
         </h1>
       </header>
 
@@ -65,7 +86,7 @@ function Booking() {
               <div className="flex gap-3 p-3">
                 <img src={hostel.photos[0]} alt={hostel.name} loading="lazy" width={96} height={96} className="h-20 w-20 shrink-0 rounded-xl object-cover" />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-display text-lg font-semibold">{hostel.name}</p>
+                  <p className="truncate font-display text-lg font-bold">{hostel.name}</p>
                   <p className="truncate text-xs text-muted-foreground">{hostel.area} · {hostel.distanceKm} km</p>
                   <span className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-primary">
                     <ShieldCheck className="h-3 w-3" /> Verified
@@ -79,14 +100,17 @@ function Booking() {
               <dl className="mt-3 space-y-2 text-sm">
                 <Row label="Semester rent" value={formatGHS(hostel.pricePerSemester)} />
                 <Row label="Refundable deposit" value={formatGHS(hostel.deposit)} />
-                <Row label="Service fee" value="GHS 0" muted />
+                <Row label={`HostelEase service fee (${Math.round(SERVICE_FEE_RATE * 100)}%)`} value={formatGHS(serviceFee)} />
                 <div className="my-2 border-t border-border" />
                 <Row label="Total due now" value={formatGHS(total)} bold />
               </dl>
+              <p className="mt-2 text-[11px] text-muted-foreground">
+                A {Math.round(SERVICE_FEE_RATE * 100)}% service fee helps us verify listings and keep HostelEase running.
+              </p>
             </div>
 
             <div className="flex items-start gap-3 rounded-2xl bg-gold/15 p-4 text-sm">
-              <Clock className="mt-0.5 h-4 w-4 shrink-0 text-gold-foreground" />
+              <Clock className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
               <p>Your room is held for <strong>2 hours</strong> after you tap Continue. Complete payment within this window.</p>
             </div>
           </div>
@@ -94,39 +118,95 @@ function Booking() {
 
         {step === "pay" && (
           <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">Select your provider and enter the number that will receive the prompt.</p>
+            <p className="text-sm text-muted-foreground">Pick how you'd like to pay.</p>
             <div className="grid gap-2">
-              {PROVIDERS.map((p) => (
-                <button
-                  key={p.id}
-                  onClick={() => setProvider(p.id)}
-                  className={cn(
-                    "flex items-center gap-3 rounded-2xl border bg-card p-3 text-left transition-all",
-                    provider === p.id ? "border-primary ring-2 ring-primary/20" : "border-border",
-                  )}
-                >
-                  <span className={cn("grid h-11 w-11 place-items-center rounded-xl text-[11px] font-bold", p.color)}>{p.initials}</span>
-                  <span className="flex-1 text-sm font-semibold">{p.name}</span>
-                  <span className={cn("h-5 w-5 rounded-full border-2", provider === p.id ? "border-primary bg-primary" : "border-border")} />
-                </button>
-              ))}
+              {METHODS.map((m) => {
+                const Icon = m.icon;
+                const active = method === m.id;
+                return (
+                  <button
+                    key={m.id}
+                    onClick={() => setMethod(m.id)}
+                    className={cn(
+                      "flex items-center gap-3 rounded-2xl border bg-card p-3 text-left transition-all",
+                      active ? "border-primary ring-2 ring-primary/20" : "border-border",
+                    )}
+                  >
+                    <span className={cn("grid h-11 w-11 place-items-center rounded-xl", active ? "bg-primary text-primary-foreground" : "bg-secondary text-primary")}>
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <span className="flex-1">
+                      <span className="block text-sm font-semibold">{m.name}</span>
+                      <span className="block text-[11px] text-muted-foreground">{m.sub}</span>
+                    </span>
+                    <span className={cn("h-5 w-5 rounded-full border-2", active ? "border-primary bg-primary" : "border-border")} />
+                  </button>
+                );
+              })}
             </div>
-            <label className="block">
-              <span className="text-xs font-semibold">Mobile Money number</span>
-              <input
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="024 123 4567"
-                className="mt-1.5 w-full rounded-2xl border border-input bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring"
-              />
-            </label>
+
+            {method === "momo" && (
+              <div className="space-y-3">
+                <div className="grid grid-cols-3 gap-2">
+                  {MOMO_PROVIDERS.map((p) => (
+                    <button
+                      key={p.id}
+                      onClick={() => setMomoProvider(p.id)}
+                      className={cn(
+                        "rounded-2xl border bg-card p-2 text-center transition-all",
+                        momoProvider === p.id ? "border-primary ring-2 ring-primary/20" : "border-border",
+                      )}
+                    >
+                      <span className={cn("mx-auto grid h-9 w-full place-items-center rounded-xl text-[11px] font-bold", p.color)}>{p.initials}</span>
+                      <span className="mt-1 block text-[11px] font-semibold">{p.name}</span>
+                    </button>
+                  ))}
+                </div>
+                <Field label="Mobile Money number" value={phone} onChange={setPhone} placeholder="024 123 4567" type="tel" />
+              </div>
+            )}
+
+            {method === "bank" && (
+              <div className="space-y-3">
+                <label className="block">
+                  <span className="text-xs font-semibold">Bank</span>
+                  <select
+                    value={bank}
+                    onChange={(e) => setBank(e.target.value)}
+                    className="mt-1.5 w-full rounded-2xl border border-input bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                  >
+                    {["GCB Bank", "Ecobank", "Fidelity Bank", "Absa", "Stanbic", "Zenith Bank", "CalBank"].map((b) => (
+                      <option key={b}>{b}</option>
+                    ))}
+                  </select>
+                </label>
+                <Field label="Account number" value={accountNumber} onChange={setAccountNumber} placeholder="1234567890" type="tel" />
+              </div>
+            )}
+
+            {method === "card" && (
+              <div className="space-y-3">
+                <Field label="Card number" value={cardNumber} onChange={setCardNumber} placeholder="4242 4242 4242 4242" type="tel" />
+                <div className="grid grid-cols-2 gap-3">
+                  <Field label="Expiry" value={cardExpiry} onChange={setCardExpiry} placeholder="MM/YY" />
+                  <Field label="CVC" value={cardCvc} onChange={setCardCvc} placeholder="123" type="tel" />
+                </div>
+              </div>
+            )}
+
             <div className="rounded-2xl bg-secondary p-4 text-sm">
-              <div className="flex justify-between font-semibold">
+              <div className="flex justify-between">
+                <span>Subtotal</span>
+                <span>{formatGHS(subtotal)}</span>
+              </div>
+              <div className="flex justify-between text-muted-foreground">
+                <span>Service fee ({Math.round(SERVICE_FEE_RATE * 100)}%)</span>
+                <span>{formatGHS(serviceFee)}</span>
+              </div>
+              <div className="mt-2 flex justify-between font-bold">
                 <span>Amount</span>
                 <span>{formatGHS(total)}</span>
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">You'll receive a prompt to authorize this payment.</p>
             </div>
           </div>
         )}
@@ -137,7 +217,7 @@ function Booking() {
               <Check className="h-10 w-10" strokeWidth={3} />
             </div>
             <div>
-              <h2 className="font-display text-2xl font-semibold">You're booked!</h2>
+              <h2 className="font-display text-2xl font-bold">You're booked!</h2>
               <p className="mt-2 text-sm text-muted-foreground">A confirmation receipt has been sent to your email and is saved in your bookings.</p>
             </div>
             <div className="rounded-2xl bg-card p-4 text-left shadow-card">
@@ -145,7 +225,8 @@ function Booking() {
               <dl className="mt-3 space-y-2 text-sm">
                 <Row label="Hostel" value={hostel.name} />
                 <Row label="Reference" value={`HE-${hostel.id.slice(0, 4).toUpperCase()}-${Math.floor(Math.random() * 9000 + 1000)}`} />
-                <Row label="Paid via" value={PROVIDERS.find((p) => p.id === provider)?.name ?? ""} />
+                <Row label="Paid via" value={methodLabel} />
+                <Row label="Service fee" value={formatGHS(serviceFee)} muted />
                 <Row label="Amount" value={formatGHS(total)} bold />
               </dl>
             </div>
@@ -156,6 +237,7 @@ function Booking() {
           </div>
         )}
       </div>
+
 
       {step !== "done" && (
         <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md border-t border-border bg-card/95 px-5 py-3 backdrop-blur safe-bottom">
