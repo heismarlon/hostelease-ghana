@@ -20,16 +20,17 @@ function Discover() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <header className="rounded-b-3xl bg-primary px-5 pb-6 pt-12 text-primary-foreground">
+      <header className="rounded-b-3xl bg-hero-gradient px-5 pb-6 pt-12 text-white">
         <div className="flex items-start justify-between">
           <div>
-            <p className="flex items-center gap-1 text-xs font-medium text-primary-foreground/70">
+            <p className="flex items-center gap-1 text-xs font-medium text-white/75">
               <MapPin className="h-3 w-3" />
               University of Cape Coast
             </p>
-            <h1 className="mt-1 font-display text-2xl font-semibold leading-tight">
+            <h1 className="mt-1 font-display text-2xl font-bold leading-tight">
               Hi Marlon, find your<br />next home <span className="text-gold">near campus</span>
             </h1>
+
           </div>
           <button type="button" className="grid h-10 w-10 place-items-center rounded-full bg-white/10" aria-label="Notifications">
             <Bell className="h-4 w-4" />
