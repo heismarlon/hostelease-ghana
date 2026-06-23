@@ -8,6 +8,15 @@ import img7676 from "@/assets/uploads/IMG_7676.jpeg.asset.json";
 import img7673 from "@/assets/uploads/IMG_7673.jpeg.asset.json";
 import img7671 from "@/assets/uploads/IMG_7671.jpeg.asset.json";
 import img7678 from "@/assets/uploads/IMG_7678.jpeg.asset.json";
+import img7687 from "@/assets/uploads/IMG_7687.jpeg.asset.json";
+import img7682b from "@/assets/uploads/IMG_7682b.jpeg.asset.json";
+import img7672 from "@/assets/uploads/IMG_7672.jpeg.asset.json";
+import img7679 from "@/assets/uploads/IMG_7679.jpeg.asset.json";
+
+const exteriorNight2 = img7687.url; // illuminated balcony block at night
+const roomTwinChecker = img7682b.url; // twin checker beds with AC + desk
+const roomBunk = img7672.url; // bunk beds room
+const roomMoody = img7679.url; // dark moody single with painting
 
 const exterior1 = img7686.url; // beige balconies exterior
 const exterior2 = img7684.url; // night atrium
