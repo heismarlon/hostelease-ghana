@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ChevronRight, CreditCard, Gift, Globe, Heart, LogOut, Moon, ShieldCheck, Users } from "lucide-react";
+import { ChevronRight, CreditCard, Gift, Globe, Heart, LogOut, Moon, ShieldCheck, User, Users } from "lucide-react";
 
 
 export const Route = createFileRoute("/_app/profile")({
@@ -55,9 +55,10 @@ function Profile() {
       <section className="space-y-2 px-5">
         <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Quick actions</h2>
         <div className="overflow-hidden rounded-2xl bg-card shadow-card">
+          <Row icon={User} label="Personal info" to="/personal-info" />
           <Row icon={Heart} label="Saved hostels" to="/saved" />
           <Row icon={Users} label="Roommate matching" badge="New" />
-          <Row icon={CreditCard} label="Payment methods" />
+          <Row icon={CreditCard} label="Payment methods" to="/payments" />
           <Row icon={Gift} label="Refer & earn GHS 50" />
           <Row icon={Globe} label="Language" value="English" />
           <Row icon={Moon} label="Dark mode" value="System" />
@@ -88,7 +89,7 @@ function Row({
   value?: string;
   badge?: string;
   danger?: boolean;
-  to?: "/saved";
+  to?: "/saved" | "/payments" | "/personal-info";
   onClick?: () => void;
 }) {
   const content = (

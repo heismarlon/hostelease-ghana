@@ -16,6 +16,8 @@ import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppSearchRouteImport } from './routes/_app/search'
 import { Route as AppSavedRouteImport } from './routes/_app/saved'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
+import { Route as AppPersonalInfoRouteImport } from './routes/_app/personal-info'
+import { Route as AppPaymentsRouteImport } from './routes/_app/payments'
 import { Route as AppMessagesRouteImport } from './routes/_app/messages'
 import { Route as AppCompareRouteImport } from './routes/_app/compare'
 import { Route as AppHostelIdRouteImport } from './routes/_app/hostel.$id'
@@ -55,6 +57,16 @@ const AppProfileRoute = AppProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AppRoute,
 } as any)
+const AppPersonalInfoRoute = AppPersonalInfoRouteImport.update({
+  id: '/personal-info',
+  path: '/personal-info',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPaymentsRoute = AppPaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppMessagesRoute = AppMessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
@@ -82,6 +94,8 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/compare': typeof AppCompareRoute
   '/messages': typeof AppMessagesRoute
+  '/payments': typeof AppPaymentsRoute
+  '/personal-info': typeof AppPersonalInfoRoute
   '/profile': typeof AppProfileRoute
   '/saved': typeof AppSavedRoute
   '/search': typeof AppSearchRoute
@@ -93,6 +107,8 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/compare': typeof AppCompareRoute
   '/messages': typeof AppMessagesRoute
+  '/payments': typeof AppPaymentsRoute
+  '/personal-info': typeof AppPersonalInfoRoute
   '/profile': typeof AppProfileRoute
   '/saved': typeof AppSavedRoute
   '/search': typeof AppSearchRoute
@@ -107,6 +123,8 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/_app/compare': typeof AppCompareRoute
   '/_app/messages': typeof AppMessagesRoute
+  '/_app/payments': typeof AppPaymentsRoute
+  '/_app/personal-info': typeof AppPersonalInfoRoute
   '/_app/profile': typeof AppProfileRoute
   '/_app/saved': typeof AppSavedRoute
   '/_app/search': typeof AppSearchRoute
@@ -122,6 +140,8 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/compare'
     | '/messages'
+    | '/payments'
+    | '/personal-info'
     | '/profile'
     | '/saved'
     | '/search'
@@ -133,6 +153,8 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/compare'
     | '/messages'
+    | '/payments'
+    | '/personal-info'
     | '/profile'
     | '/saved'
     | '/search'
@@ -146,6 +168,8 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/_app/compare'
     | '/_app/messages'
+    | '/_app/payments'
+    | '/_app/personal-info'
     | '/_app/profile'
     | '/_app/saved'
     | '/_app/search'
@@ -211,6 +235,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProfileRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/personal-info': {
+      id: '/_app/personal-info'
+      path: '/personal-info'
+      fullPath: '/personal-info'
+      preLoaderRoute: typeof AppPersonalInfoRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/payments': {
+      id: '/_app/payments'
+      path: '/payments'
+      fullPath: '/payments'
+      preLoaderRoute: typeof AppPaymentsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/messages': {
       id: '/_app/messages'
       path: '/messages'
@@ -245,6 +283,8 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppCompareRoute: typeof AppCompareRoute
   AppMessagesRoute: typeof AppMessagesRoute
+  AppPaymentsRoute: typeof AppPaymentsRoute
+  AppPersonalInfoRoute: typeof AppPersonalInfoRoute
   AppProfileRoute: typeof AppProfileRoute
   AppSavedRoute: typeof AppSavedRoute
   AppSearchRoute: typeof AppSearchRoute
@@ -256,6 +296,8 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppCompareRoute: AppCompareRoute,
   AppMessagesRoute: AppMessagesRoute,
+  AppPaymentsRoute: AppPaymentsRoute,
+  AppPersonalInfoRoute: AppPersonalInfoRoute,
   AppProfileRoute: AppProfileRoute,
   AppSavedRoute: AppSavedRoute,
   AppSearchRoute: AppSearchRoute,

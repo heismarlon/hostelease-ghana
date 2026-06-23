@@ -221,13 +221,24 @@ function Booking() {
               <p className="mt-2 text-sm text-muted-foreground">A confirmation receipt has been sent to your email and is saved in your bookings.</p>
             </div>
             <div className="rounded-2xl bg-card p-4 text-left shadow-card">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Receipt</p>
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Payment receipt</p>
+                <span className="rounded-full bg-success/15 px-2 py-0.5 text-[10px] font-bold text-success">Paid</span>
+              </div>
               <dl className="mt-3 space-y-2 text-sm">
                 <Row label="Hostel" value={hostel.name} />
                 <Row label="Reference" value={`HE-${hostel.id.slice(0, 4).toUpperCase()}-${Math.floor(Math.random() * 9000 + 1000)}`} />
                 <Row label="Paid via" value={methodLabel} />
-                <Row label="Service fee" value={formatGHS(serviceFee)} muted />
-                <Row label="Amount" value={formatGHS(total)} bold />
+                <Row label="Date" value={new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })} />
+              </dl>
+              <div className="my-3 border-t border-dashed border-border" />
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Fee breakdown</p>
+              <dl className="mt-2 space-y-1.5 text-sm">
+                <Row label="Semester rent" value={formatGHS(hostel.pricePerSemester)} muted />
+                <Row label="Refundable deposit" value={formatGHS(hostel.deposit)} muted />
+                <Row label={`HostelEase service fee (${Math.round(SERVICE_FEE_RATE * 100)}%)`} value={formatGHS(serviceFee)} muted />
+                <div className="my-1 border-t border-border" />
+                <Row label="Total paid" value={formatGHS(total)} bold />
               </dl>
             </div>
             <div className="space-y-2">
