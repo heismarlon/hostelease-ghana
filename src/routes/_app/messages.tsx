@@ -74,7 +74,7 @@ function Messages() {
         </div>
       </header>
 
-      <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4 pb-32">
+      <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4 pb-40">
         {messages.map((m) => (
           <div
             key={m.id}
@@ -101,7 +101,7 @@ function Messages() {
         <div ref={endRef} />
       </div>
 
-      <div className="fixed inset-x-0 bottom-20 z-30 mx-auto max-w-md border-t border-border bg-card/95 px-3 py-2 backdrop-blur">
+      <div className="fixed inset-x-0 bottom-24 z-30 mx-auto max-w-md border-t border-border bg-card/95 px-3 py-3 pb-4 backdrop-blur">
         <div className="flex items-end gap-2">
           <textarea
             value={draft}

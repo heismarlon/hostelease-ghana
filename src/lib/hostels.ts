@@ -8,6 +8,15 @@ import img7676 from "@/assets/uploads/IMG_7676.jpeg.asset.json";
 import img7673 from "@/assets/uploads/IMG_7673.jpeg.asset.json";
 import img7671 from "@/assets/uploads/IMG_7671.jpeg.asset.json";
 import img7678 from "@/assets/uploads/IMG_7678.jpeg.asset.json";
+import img7687 from "@/assets/uploads/IMG_7687.jpeg.asset.json";
+import img7682b from "@/assets/uploads/IMG_7682b.jpeg.asset.json";
+import img7672 from "@/assets/uploads/IMG_7672.jpeg.asset.json";
+import img7679 from "@/assets/uploads/IMG_7679.jpeg.asset.json";
+
+const exteriorNight2 = img7687.url; // illuminated balcony block at night
+const roomTwinChecker = img7682b.url; // twin checker beds with AC + desk
+const roomBunk = img7672.url; // bunk beds room
+const roomMoody = img7679.url; // dark moody single with painting
 
 const exterior1 = img7686.url; // beige balconies exterior
 const exterior2 = img7684.url; // night atrium
@@ -263,7 +272,92 @@ export const HOSTELS: Hostel[] = [
       { id: "r1", author: "Selasi D.", program: "BFA Painting, L200", rating: 5, comment: "Finally a room with personality. Light is amazing for sketching.", date: "Jan 2025" },
     ],
   },
+  {
+    id: "elmina-glass-house",
+    name: "Elmina Glass House",
+    tagline: "Striking glass-atrium block with bright balconies",
+    area: "Kwaprow",
+    distanceKm: 1.5,
+    pricePerSemester: 4600,
+    deposit: 700,
+    rating: 4.7,
+    reviewsCount: 38,
+    verified: true,
+    availability: "available",
+    roomTypes: ["self-contained", "single"],
+    amenities: ["Wi-Fi", "24/7 Water", "Security", "AC", "Backup Power", "Kitchen"],
+    photos: [exteriorNight2, roomTwinChecker, roomMoody],
+    description: "Modern three-storey residence with a full-height glass atrium, private balconies on every unit, and warm landscape lighting. Built in 2024 with quiet inverter ACs and fibre Wi-Fi.",
+    owner: { name: "Elmina Living", responseRate: 98 },
+    reviews: [
+      { id: "r1", author: "Nhyira A.", program: "BSc Architecture, L300", rating: 5, comment: "Building is beautiful at night. Balcony is my favourite study spot.", date: "May 2025" },
+    ],
+  },
+  {
+    id: "savanna-twin-lodge",
+    name: "Savanna Twin Lodge",
+    tagline: "Roomy twin shares with AC, desk and shelves",
+    area: "Amamoma",
+    distanceKm: 0.8,
+    pricePerSemester: 2700,
+    deposit: 400,
+    rating: 4.3,
+    reviewsCount: 71,
+    verified: true,
+    availability: "available",
+    roomTypes: ["shared"],
+    amenities: ["Wi-Fi", "24/7 Water", "Security", "AC", "Study Area"],
+    photos: [roomTwinChecker, roomBunk, exterior1],
+    description: "Spacious twin rooms with a shared study desk, wardrobe space and ceiling fan plus split AC. Tidy bathrooms shared between two rooms.",
+    owner: { name: "Mrs. Akorfa Yeboah", responseRate: 93 },
+    reviews: [
+      { id: "r1", author: "Kobby A.", program: "BSc Statistics, L200", rating: 4, comment: "Big enough that you don't feel on top of your roommate. AC is a lifesaver.", date: "Apr 2025" },
+    ],
+  },
+  {
+    id: "saltpond-bunk-house",
+    name: "Saltpond Bunk House",
+    tagline: "Friendly 4-bed bunk dorms — cheapest near OLA",
+    area: "OLA",
+    distanceKm: 1.0,
+    pricePerSemester: 1300,
+    deposit: 200,
+    rating: 4.1,
+    reviewsCount: 124,
+    verified: false,
+    availability: "few",
+    roomTypes: ["shared"],
+    amenities: ["Wi-Fi", "Security", "24/7 Water"],
+    photos: [roomBunk, exterior3, roomTwinChecker],
+    description: "Four-bunk dorm rooms with personal lockers and curtains. Great for fresh L100 students looking to make friends fast.",
+    owner: { name: "Bro. Kojo", responseRate: 85 },
+    reviews: [
+      { id: "r1", author: "Adwoa S.", program: "BA English, L100", rating: 4, comment: "Made all my closest friends in this room. Curtains give some privacy.", date: "Feb 2025" },
+    ],
+  },
+  {
+    id: "iron-roof-studios",
+    name: "Iron Roof Studios",
+    tagline: "Moody industrial singles for focused students",
+    area: "Science",
+    distanceKm: 1.4,
+    pricePerSemester: 3100,
+    deposit: 500,
+    rating: 4.6,
+    reviewsCount: 47,
+    verified: true,
+    availability: "few",
+    roomTypes: ["single"],
+    amenities: ["Wi-Fi", "24/7 Water", "Security", "AC", "Backup Power"],
+    photos: [roomMoody, exteriorNight2, roomSingle1],
+    description: "Stylish single rooms with dark walls, exposed steel ceilings, framed art and a quiet split AC. Designed for postgrad and final-year students who want a calm, distraction-free space.",
+    owner: { name: "Studio 7 Properties", responseRate: 97 },
+    reviews: [
+      { id: "r1", author: "Yaa P.", program: "MPhil Economics", rating: 5, comment: "Feels like a boutique hotel. I sleep and study so much better here.", date: "Mar 2025" },
+    ],
+  },
 ];
+
 
 export const AMENITIES = ["Wi-Fi", "24/7 Water", "Security", "Kitchen", "Study Area", "AC", "Backup Power", "Pool", "Gym"];
 
