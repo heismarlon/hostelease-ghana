@@ -16,6 +16,7 @@ import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AppSearchRouteImport } from './routes/_app/search'
 import { Route as AppSavedRouteImport } from './routes/_app/saved'
+import { Route as AppReceiptsRouteImport } from './routes/_app/receipts'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
 import { Route as AppPersonalInfoRouteImport } from './routes/_app/personal-info'
 import { Route as AppPaymentsRouteImport } from './routes/_app/payments'
@@ -56,6 +57,11 @@ const AppSearchRoute = AppSearchRouteImport.update({
 const AppSavedRoute = AppSavedRouteImport.update({
   id: '/saved',
   path: '/saved',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppReceiptsRoute = AppReceiptsRouteImport.update({
+  id: '/receipts',
+  path: '/receipts',
   getParentRoute: () => AppRoute,
 } as any)
 const AppProfileRoute = AppProfileRouteImport.update({
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/payments': typeof AppPaymentsRoute
   '/personal-info': typeof AppPersonalInfoRoute
   '/profile': typeof AppProfileRoute
+  '/receipts': typeof AppReceiptsRoute
   '/saved': typeof AppSavedRoute
   '/search': typeof AppSearchRoute
   '/api/chat': typeof ApiChatRoute
@@ -117,6 +124,7 @@ export interface FileRoutesByTo {
   '/payments': typeof AppPaymentsRoute
   '/personal-info': typeof AppPersonalInfoRoute
   '/profile': typeof AppProfileRoute
+  '/receipts': typeof AppReceiptsRoute
   '/saved': typeof AppSavedRoute
   '/search': typeof AppSearchRoute
   '/api/chat': typeof ApiChatRoute
@@ -134,6 +142,7 @@ export interface FileRoutesById {
   '/_app/payments': typeof AppPaymentsRoute
   '/_app/personal-info': typeof AppPersonalInfoRoute
   '/_app/profile': typeof AppProfileRoute
+  '/_app/receipts': typeof AppReceiptsRoute
   '/_app/saved': typeof AppSavedRoute
   '/_app/search': typeof AppSearchRoute
   '/api/chat': typeof ApiChatRoute
@@ -152,6 +161,7 @@ export interface FileRouteTypes {
     | '/payments'
     | '/personal-info'
     | '/profile'
+    | '/receipts'
     | '/saved'
     | '/search'
     | '/api/chat'
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/payments'
     | '/personal-info'
     | '/profile'
+    | '/receipts'
     | '/saved'
     | '/search'
     | '/api/chat'
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/_app/payments'
     | '/_app/personal-info'
     | '/_app/profile'
+    | '/_app/receipts'
     | '/_app/saved'
     | '/_app/search'
     | '/api/chat'
@@ -248,6 +260,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSavedRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/receipts': {
+      id: '/_app/receipts'
+      path: '/receipts'
+      fullPath: '/receipts'
+      preLoaderRoute: typeof AppReceiptsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/profile': {
       id: '/_app/profile'
       path: '/profile'
@@ -306,6 +325,7 @@ interface AppRouteChildren {
   AppPaymentsRoute: typeof AppPaymentsRoute
   AppPersonalInfoRoute: typeof AppPersonalInfoRoute
   AppProfileRoute: typeof AppProfileRoute
+  AppReceiptsRoute: typeof AppReceiptsRoute
   AppSavedRoute: typeof AppSavedRoute
   AppSearchRoute: typeof AppSearchRoute
   AppIndexRoute: typeof AppIndexRoute
@@ -319,6 +339,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppPaymentsRoute: AppPaymentsRoute,
   AppPersonalInfoRoute: AppPersonalInfoRoute,
   AppProfileRoute: AppProfileRoute,
+  AppReceiptsRoute: AppReceiptsRoute,
   AppSavedRoute: AppSavedRoute,
   AppSearchRoute: AppSearchRoute,
   AppIndexRoute: AppIndexRoute,

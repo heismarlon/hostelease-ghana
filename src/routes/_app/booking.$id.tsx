@@ -1,8 +1,9 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { ArrowLeft, Building2, Check, Clock, CreditCard, ShieldCheck, Smartphone } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { ArrowLeft, Building2, Check, Clock, CreditCard, Download, ShieldCheck, Smartphone } from "lucide-react";
 import { formatGHS, getHostel } from "@/lib/hostels";
 import { cn } from "@/lib/utils";
+import { downloadReceipt, saveReceipt, type Receipt } from "@/lib/receipts";
 
 export const Route = createFileRoute("/_app/booking/$id")({
   loader: ({ params }) => {
