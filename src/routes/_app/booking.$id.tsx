@@ -253,7 +253,7 @@ function Booking() {
               </div>
               <dl className="mt-3 space-y-2 text-sm">
                 <Row label="Hostel" value={hostel.name} />
-                <Row label="Reference" value={`HE-${hostel.id.slice(0, 4).toUpperCase()}-${Math.floor(Math.random() * 9000 + 1000)}`} />
+                <Row label="Reference" value={receiptRef.current?.reference ?? "—"} />
                 <Row label="Paid via" value={methodLabel} />
                 <Row label="Date" value={new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })} />
               </dl>
@@ -268,8 +268,14 @@ function Booking() {
               </dl>
             </div>
             <div className="space-y-2">
-              <Link to="/profile" className="block rounded-2xl bg-primary py-3.5 text-sm font-semibold text-primary-foreground">View booking</Link>
-              <Link to="/" className="block rounded-2xl border border-border bg-card py-3.5 text-sm font-semibold">Back home</Link>
+              <button
+                onClick={() => receiptRef.current && downloadReceipt(receiptRef.current)}
+                className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-sm font-semibold text-primary-foreground"
+              >
+                <Download className="h-4 w-4" /> Download receipt
+              </button>
+              <Link to="/receipts" className="block rounded-2xl border border-border bg-card py-3.5 text-center text-sm font-semibold">View all receipts</Link>
+              <Link to="/" className="block rounded-2xl border border-border bg-card py-3.5 text-center text-sm font-semibold">Back home</Link>
             </div>
           </div>
         )}
@@ -279,7 +285,7 @@ function Booking() {
       {step !== "done" && (
         <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md border-t border-border bg-card/95 px-5 py-3 backdrop-blur safe-bottom">
           <button
-            onClick={() => setStep(step === "summary" ? "pay" : "done")}
+            onClick={() => (step === "summary" ? setStep("pay") : completeBooking())}
             disabled={step === "pay" && payDisabled}
             className="w-full rounded-2xl bg-primary py-3.5 text-sm font-bold text-primary-foreground shadow-gold transition-transform active:scale-[0.98] disabled:opacity-50 disabled:shadow-none"
           >
@@ -287,6 +293,7 @@ function Booking() {
           </button>
         </div>
       )}
+
     </div>
   );
 }
