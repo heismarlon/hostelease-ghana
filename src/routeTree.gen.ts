@@ -13,6 +13,7 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AppSearchRouteImport } from './routes/_app/search'
 import { Route as AppSavedRouteImport } from './routes/_app/saved'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
@@ -41,6 +42,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppRoute,
+} as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppSearchRoute = AppSearchRouteImport.update({
   id: '/search',
@@ -99,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AppProfileRoute
   '/saved': typeof AppSavedRoute
   '/search': typeof AppSearchRoute
+  '/api/chat': typeof ApiChatRoute
   '/booking/$id': typeof AppBookingIdRoute
   '/hostel/$id': typeof AppHostelIdRoute
 }
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/profile': typeof AppProfileRoute
   '/saved': typeof AppSavedRoute
   '/search': typeof AppSearchRoute
+  '/api/chat': typeof ApiChatRoute
   '/': typeof AppIndexRoute
   '/booking/$id': typeof AppBookingIdRoute
   '/hostel/$id': typeof AppHostelIdRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   '/_app/profile': typeof AppProfileRoute
   '/_app/saved': typeof AppSavedRoute
   '/_app/search': typeof AppSearchRoute
+  '/api/chat': typeof ApiChatRoute
   '/_app/': typeof AppIndexRoute
   '/_app/booking/$id': typeof AppBookingIdRoute
   '/_app/hostel/$id': typeof AppHostelIdRoute
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/saved'
     | '/search'
+    | '/api/chat'
     | '/booking/$id'
     | '/hostel/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/saved'
     | '/search'
+    | '/api/chat'
     | '/'
     | '/booking/$id'
     | '/hostel/$id'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/_app/profile'
     | '/_app/saved'
     | '/_app/search'
+    | '/api/chat'
     | '/_app/'
     | '/_app/booking/$id'
     | '/_app/hostel/$id'
@@ -182,6 +194,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   OnboardingRoute: typeof OnboardingRoute
+  ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -213,6 +226,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_app/search': {
       id: '/_app/search'
@@ -312,6 +332,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   OnboardingRoute: OnboardingRoute,
+  ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -59,6 +59,7 @@ export interface Hostel {
   description: string;
   owner: { name: string; responseRate: number };
   reviews: Review[];
+  waterLogged?: boolean;
 }
 
 export const HOSTELS: Hostel[] = [
