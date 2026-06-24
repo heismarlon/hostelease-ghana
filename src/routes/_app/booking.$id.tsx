@@ -65,6 +65,31 @@ function Booking() {
         ? `${bank} • ****${accountNumber.slice(-4)}`
         : `Card ****${cardNumber.slice(-4)}`;
 
+  const receiptRef = useRef<Receipt | null>(null);
+  const receipt = useMemo(() => {
+    if (receiptRef.current) return receiptRef.current;
+    return null;
+  }, []);
+
+  const completeBooking = () => {
+    const r: Receipt = {
+      id: crypto.randomUUID(),
+      reference: `HE-${hostel.id.slice(0, 4).toUpperCase()}-${Math.floor(Math.random() * 9000 + 1000)}`,
+      hostelId: hostel.id,
+      hostelName: hostel.name,
+      subtotal,
+      serviceFee,
+      total,
+      method: methodLabel,
+      status: "Paid",
+      createdAt: new Date().toISOString(),
+    };
+    receiptRef.current = r;
+    saveReceipt(r);
+    setStep("done");
+  };
+  void receipt;
+
   return (
     <div className="min-h-screen bg-background">
       <header className="flex items-center gap-3 px-5 pt-12 pb-4">
