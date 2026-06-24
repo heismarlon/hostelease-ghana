@@ -122,7 +122,8 @@ export const HOSTELS: Hostel[] = [
     roomTypes: ["shared"],
     amenities: ["Wi-Fi", "Security", "Study Area"],
     photos: [roomSingle2, roomTwin2, exterior3],
-    description: "Budget-friendly shared rooms (2 per room). Tight community, walking distance to Old Site lecture halls.",
+    description: "Budget-friendly shared rooms (2 per room). Tight community, walking distance to Old Site lecture halls. Note: the surrounding street is a known water-logged area during heavy rains.",
+    waterLogged: true,
     owner: { name: "Mama Esi", responseRate: 88 },
     reviews: [
       { id: "r1", author: "Fafa K.", program: "BSc Agric, L100", rating: 4, comment: "Affordable and my roommate is cool. Water sometimes stops.", date: "Jan 2025" },
@@ -225,7 +226,8 @@ export const HOSTELS: Hostel[] = [
     roomTypes: ["single"],
     amenities: ["Wi-Fi", "Security"],
     photos: [roomSingle2, exterior3],
-    description: "No-frills single rooms for students on a strict budget. Communal kitchen and shared bathrooms. Trotro to campus is GHS 3.",
+    description: "No-frills single rooms for students on a strict budget. Communal kitchen and shared bathrooms. Trotro to campus is GHS 3. Note: located in a water-logged area — expect puddles after heavy rains.",
+    waterLogged: true,
     owner: { name: "Mr. Atta Mensah", responseRate: 78 },
     reviews: [
       { id: "r1", author: "Joojo T.", program: "BA Sociology, L100", rating: 4, comment: "Cheapest I could find. Honest landlord, basic but clean.", date: "Feb 2025" },
@@ -330,7 +332,8 @@ export const HOSTELS: Hostel[] = [
     roomTypes: ["shared"],
     amenities: ["Wi-Fi", "Security", "24/7 Water"],
     photos: [roomBunk, exterior3, roomTwinChecker],
-    description: "Four-bunk dorm rooms with personal lockers and curtains. Great for fresh L100 students looking to make friends fast.",
+    description: "Four-bunk dorm rooms with personal lockers and curtains. Great for fresh L100 students looking to make friends fast. Sits in a water-logged area — the front yard floods briefly during peak rainy season.",
+    waterLogged: true,
     owner: { name: "Bro. Kojo", responseRate: 85 },
     reviews: [
       { id: "r1", author: "Adwoa S.", program: "BA English, L100", rating: 4, comment: "Made all my closest friends in this room. Curtains give some privacy.", date: "Feb 2025" },
