@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, Heart, Share2, ShieldCheck, Star, MapPin, MessageCircle, Check, Flag } from "lucide-react";
+import { ArrowLeft, Heart, Share2, ShieldCheck, Star, MapPin, MessageCircle, Check, Flag, Droplets } from "lucide-react";
 import { AVAILABILITY_META, formatGHS, getHostel } from "@/lib/hostels";
 import { cn } from "@/lib/utils";
 
@@ -119,6 +119,17 @@ function HostelDetail() {
 
         {/* Description */}
         <p className="text-sm leading-relaxed text-muted-foreground">{hostel.description}</p>
+
+        {hostel.waterLogged && (
+          <div className="flex items-start gap-3 rounded-2xl border border-warning/40 bg-warning/10 p-3 text-sm">
+            <Droplets className="mt-0.5 h-4 w-4 shrink-0 text-warning-foreground" />
+            <div>
+              <p className="font-semibold">Water-logged area</p>
+              <p className="text-xs text-muted-foreground">This location is prone to flooding during heavy rains. Plan footwear and access accordingly.</p>
+            </div>
+          </div>
+        )}
+
 
         {/* Price card */}
         <div className="rounded-2xl border border-border bg-card p-4 shadow-card">
