@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ChevronRight, CreditCard, Gift, Globe, Heart, LogOut, Moon, ShieldCheck, User, Users } from "lucide-react";
+import { ChevronRight, CreditCard, Gift, Globe, Heart, LogOut, Moon, Receipt, ShieldCheck, Sun, User, Users } from "lucide-react";
+import { useTheme, type Theme } from "@/lib/theme";
 
 
 export const Route = createFileRoute("/_app/profile")({
@@ -12,8 +13,15 @@ const BOOKINGS = [
   { hostel: "Apewosika Lodge", status: "Completed", color: "bg-muted text-muted-foreground" },
 ];
 
+const THEMES: { id: Theme; label: string }[] = [
+  { id: "light", label: "Light" },
+  { id: "dark", label: "Dark" },
+  { id: "system", label: "Auto" },
+];
+
 function Profile() {
   const navigate = useNavigate();
+  const [theme, setTheme] = useTheme();
   const signOut = () => {
     if (typeof window !== "undefined") window.localStorage.removeItem("he_signed_in");
     navigate({ to: "/auth" });
@@ -52,16 +60,41 @@ function Profile() {
         </div>
       </section>
 
+      <section className="space-y-3 px-5">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Appearance</h2>
+        <div className="rounded-2xl bg-card p-3 shadow-card">
+          <div className="mb-2 flex items-center gap-2 px-1 text-sm font-medium">
+            {theme === "dark" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+            Theme
+          </div>
+          <div className="grid grid-cols-3 gap-2">
+            {THEMES.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setTheme(t.id)}
+                className={`rounded-xl border px-3 py-2 text-xs font-semibold transition-colors ${
+                  theme === t.id
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border bg-background text-foreground"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="space-y-2 px-5">
         <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Quick actions</h2>
         <div className="overflow-hidden rounded-2xl bg-card shadow-card">
           <Row icon={User} label="Personal info" to="/personal-info" />
+          <Row icon={Receipt} label="Receipts" to="/receipts" />
           <Row icon={Heart} label="Saved hostels" to="/saved" />
           <Row icon={Users} label="Roommate matching" badge="New" />
           <Row icon={CreditCard} label="Payment methods" to="/payments" />
           <Row icon={Gift} label="Refer & earn GHS 50" />
           <Row icon={Globe} label="Language" value="English" />
-          <Row icon={Moon} label="Dark mode" value="System" />
           <Row icon={LogOut} label="Sign out" danger onClick={signOut} />
         </div>
       </section>
@@ -89,7 +122,7 @@ function Row({
   value?: string;
   badge?: string;
   danger?: boolean;
-  to?: "/saved" | "/payments" | "/personal-info";
+  to?: "/saved" | "/payments" | "/personal-info" | "/receipts";
   onClick?: () => void;
 }) {
   const content = (
@@ -107,4 +140,3 @@ function Row({
   if (onClick) return <button type="button" onClick={onClick} className="block w-full text-left border-t border-border first:border-t-0">{content}</button>;
   return <div className="border-t border-border first:border-t-0">{content}</div>;
 }
-
