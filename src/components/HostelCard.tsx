@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 
 export function HostelCard({ hostel, eager }: { hostel: Hostel; eager?: boolean }) {
   const avail = AVAILABILITY_META[hostel.availability];
+  const full = hostel.availability === "full";
   return (
     <Link
       to="/hostel/$id"
@@ -59,6 +60,23 @@ export function HostelCard({ hostel, eager }: { hostel: Hostel; eager?: boolean 
           </div>
           <span className="text-xs text-muted-foreground">{hostel.reviewsCount} reviews</span>
         </div>
+        <Link
+          to="/booking/$id"
+          params={{ id: hostel.id }}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (full) e.preventDefault();
+          }}
+          aria-disabled={full}
+          className={cn(
+            "mt-3 block rounded-2xl py-2.5 text-center text-xs font-bold transition-transform active:scale-[0.98]",
+            full
+              ? "cursor-not-allowed bg-muted text-muted-foreground"
+              : "bg-primary text-primary-foreground shadow-gold",
+          )}
+        >
+          {full ? "Fully booked" : "Reserve now"}
+        </Link>
       </div>
     </Link>
   );
