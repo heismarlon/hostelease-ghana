@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ChevronRight, CreditCard, Gift, Globe, Heart, LogOut, Moon, Receipt, ShieldCheck, Sun, User, Users } from "lucide-react";
+import { useState } from "react";
+import { Check, ChevronRight, Copy, CreditCard, Gift, Globe, Heart, LogOut, Moon, Receipt, ShieldCheck, Sun, User, Users } from "lucide-react";
 import { useTheme, type Theme } from "@/lib/theme";
 
 
@@ -19,12 +20,34 @@ const THEMES: { id: Theme; label: string }[] = [
   { id: "system", label: "Auto" },
 ];
 
+const REFERRAL_CODE = "MARLON20";
+
 function Profile() {
   const navigate = useNavigate();
   const [theme, setTheme] = useTheme();
+  const [referralLink, setReferralLink] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
   const signOut = () => {
     if (typeof window !== "undefined") window.localStorage.removeItem("he_signed_in");
     navigate({ to: "/auth" });
+  };
+
+  const handleRefer = () => {
+    const origin = typeof window !== "undefined" ? window.location.origin : "https://hostelease.app";
+    setReferralLink(`${origin}/auth?ref=${REFERRAL_CODE}`);
+    setCopied(false);
+  };
+
+  const copyLink = async () => {
+    if (!referralLink) return;
+    try {
+      await navigator.clipboard.writeText(referralLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // ignore
+    }
   };
 
   return (
@@ -91,12 +114,31 @@ function Profile() {
           <Row icon={User} label="Personal info" to="/personal-info" />
           <Row icon={Receipt} label="Receipts" to="/receipts" />
           <Row icon={Heart} label="Saved hostels" to="/saved" />
-          <Row icon={Users} label="Roommate matching" badge="New" />
+          <Row icon={Users} label="Roommate matching" badge="New" to="/roommates" />
           <Row icon={CreditCard} label="Payment methods" to="/payments" />
-          <Row icon={Gift} label="Refer & earn GHS 50" />
+          <Row icon={Gift} label="Refer & earn GHS 20" onClick={handleRefer} />
           <Row icon={Globe} label="Language" value="English" />
           <Row icon={LogOut} label="Sign out" danger onClick={signOut} />
         </div>
+
+        {referralLink && (
+          <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">Your referral link</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Share this link. You earn <strong>GHS 20</strong> when your friend completes their first booking.
+            </p>
+            <div className="mt-3 flex items-center gap-2 rounded-xl border border-border bg-card p-2">
+              <code className="flex-1 truncate text-[11px]">{referralLink}</code>
+              <button
+                onClick={copyLink}
+                className="flex items-center gap-1 rounded-lg bg-primary px-3 py-1.5 text-[11px] font-semibold text-primary-foreground"
+              >
+                {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                {copied ? "Copied" : "Copy"}
+              </button>
+            </div>
+          </div>
+        )}
       </section>
 
       <section className="px-5 pt-6 pb-4 text-center">
@@ -122,7 +164,7 @@ function Row({
   value?: string;
   badge?: string;
   danger?: boolean;
-  to?: "/saved" | "/payments" | "/personal-info" | "/receipts";
+  to?: "/saved" | "/payments" | "/personal-info" | "/receipts" | "/roommates";
   onClick?: () => void;
 }) {
   const content = (
