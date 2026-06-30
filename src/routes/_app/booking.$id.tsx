@@ -72,11 +72,19 @@ function Booking() {
   }, []);
 
   const completeBooking = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const startYear = now.getMonth() >= 7 ? year : year - 1;
+    const checkIn = new Date(startYear, 8, 1).toISOString(); // 1 Sept
+    const checkOut = new Date(startYear + 1, 4, 31).toISOString(); // 31 May
     const r: Receipt = {
       id: crypto.randomUUID(),
       reference: `HE-${hostel.id.slice(0, 4).toUpperCase()}-${Math.floor(Math.random() * 9000 + 1000)}`,
       hostelId: hostel.id,
       hostelName: hostel.name,
+      checkIn,
+      checkOut,
+      academicYear: `${startYear}/${String(startYear + 1).slice(-2)}`,
       subtotal,
       serviceFee,
       total,
