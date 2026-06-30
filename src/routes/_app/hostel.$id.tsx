@@ -157,15 +157,15 @@ function HostelDetail() {
           </ul>
         </section>
 
-        {/* Owner */}
+        {/* Contact assistant */}
         <section className="rounded-2xl bg-card p-4 shadow-card">
           <div className="flex items-center gap-3">
             <div className="grid h-12 w-12 place-items-center rounded-full bg-primary font-display text-lg font-bold text-primary-foreground">
-              {hostel.owner.name[0]}
+              HE
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold">{hostel.owner.name}</p>
-              <p className="text-xs text-muted-foreground">Replies to {hostel.owner.responseRate}% of messages</p>
+              <p className="truncate text-sm font-semibold">HostelEase Assistant</p>
+              <p className="text-xs text-muted-foreground">Ask about availability, viewings or payment</p>
             </div>
             <Link to="/messages" className="grid h-10 w-10 place-items-center rounded-full bg-gold text-gold-foreground" aria-label="Message">
               <MessageCircle className="h-4 w-4" />
