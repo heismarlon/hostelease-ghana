@@ -56,7 +56,7 @@ function Discover() {
             <Sparkles className="h-4 w-4" />
           </span>
           <div className="min-w-0">
-            <p className="text-sm font-semibold">Refer a friend, earn GHS 50</p>
+            <p className="text-sm font-semibold">Refer a friend, earn GHS 20</p>
             <p className="text-xs text-muted-foreground">When they complete their first booking.</p>
           </div>
         </div>
