@@ -16,6 +16,7 @@ import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AppSearchRouteImport } from './routes/_app/search'
 import { Route as AppSavedRouteImport } from './routes/_app/saved'
+import { Route as AppRoommatesRouteImport } from './routes/_app/roommates'
 import { Route as AppReceiptsRouteImport } from './routes/_app/receipts'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
 import { Route as AppPersonalInfoRouteImport } from './routes/_app/personal-info'
@@ -57,6 +58,11 @@ const AppSearchRoute = AppSearchRouteImport.update({
 const AppSavedRoute = AppSavedRouteImport.update({
   id: '/saved',
   path: '/saved',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRoommatesRoute = AppRoommatesRouteImport.update({
+  id: '/roommates',
+  path: '/roommates',
   getParentRoute: () => AppRoute,
 } as any)
 const AppReceiptsRoute = AppReceiptsRouteImport.update({
@@ -110,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/personal-info': typeof AppPersonalInfoRoute
   '/profile': typeof AppProfileRoute
   '/receipts': typeof AppReceiptsRoute
+  '/roommates': typeof AppRoommatesRoute
   '/saved': typeof AppSavedRoute
   '/search': typeof AppSearchRoute
   '/api/chat': typeof ApiChatRoute
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/personal-info': typeof AppPersonalInfoRoute
   '/profile': typeof AppProfileRoute
   '/receipts': typeof AppReceiptsRoute
+  '/roommates': typeof AppRoommatesRoute
   '/saved': typeof AppSavedRoute
   '/search': typeof AppSearchRoute
   '/api/chat': typeof ApiChatRoute
@@ -143,6 +151,7 @@ export interface FileRoutesById {
   '/_app/personal-info': typeof AppPersonalInfoRoute
   '/_app/profile': typeof AppProfileRoute
   '/_app/receipts': typeof AppReceiptsRoute
+  '/_app/roommates': typeof AppRoommatesRoute
   '/_app/saved': typeof AppSavedRoute
   '/_app/search': typeof AppSearchRoute
   '/api/chat': typeof ApiChatRoute
@@ -162,6 +171,7 @@ export interface FileRouteTypes {
     | '/personal-info'
     | '/profile'
     | '/receipts'
+    | '/roommates'
     | '/saved'
     | '/search'
     | '/api/chat'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
     | '/personal-info'
     | '/profile'
     | '/receipts'
+    | '/roommates'
     | '/saved'
     | '/search'
     | '/api/chat'
@@ -194,6 +205,7 @@ export interface FileRouteTypes {
     | '/_app/personal-info'
     | '/_app/profile'
     | '/_app/receipts'
+    | '/_app/roommates'
     | '/_app/saved'
     | '/_app/search'
     | '/api/chat'
@@ -258,6 +270,13 @@ declare module '@tanstack/react-router' {
       path: '/saved'
       fullPath: '/saved'
       preLoaderRoute: typeof AppSavedRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/roommates': {
+      id: '/_app/roommates'
+      path: '/roommates'
+      fullPath: '/roommates'
+      preLoaderRoute: typeof AppRoommatesRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/receipts': {
@@ -326,6 +345,7 @@ interface AppRouteChildren {
   AppPersonalInfoRoute: typeof AppPersonalInfoRoute
   AppProfileRoute: typeof AppProfileRoute
   AppReceiptsRoute: typeof AppReceiptsRoute
+  AppRoommatesRoute: typeof AppRoommatesRoute
   AppSavedRoute: typeof AppSavedRoute
   AppSearchRoute: typeof AppSearchRoute
   AppIndexRoute: typeof AppIndexRoute
@@ -340,6 +360,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppPersonalInfoRoute: AppPersonalInfoRoute,
   AppProfileRoute: AppProfileRoute,
   AppReceiptsRoute: AppReceiptsRoute,
+  AppRoommatesRoute: AppRoommatesRoute,
   AppSavedRoute: AppSavedRoute,
   AppSearchRoute: AppSearchRoute,
   AppIndexRoute: AppIndexRoute,
