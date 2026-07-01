@@ -58,7 +58,7 @@ function ReceiptsPage() {
               </div>
               <div className="mt-2 space-y-1 text-xs text-muted-foreground">
                 <Row label="Subtotal" value={formatGHS(r.subtotal)} />
-                <Row label="Service fee (5%)" value={formatGHS(r.serviceFee)} />
+                <Row label="Service fee (1.5%)" value={formatGHS(r.serviceFee)} />
               </div>
             </article>
           ))
