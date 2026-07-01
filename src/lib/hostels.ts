@@ -418,7 +418,3 @@ export function getUtilities(hostel: Hostel): UtilityInfo {
     },
   };
 }
-  available: { label: "Available", className: "bg-success/15 text-success" },
-  few: { label: "Few rooms left", className: "bg-warning/20 text-warning-foreground" },
-  full: { label: "Fully booked", className: "bg-destructive/15 text-destructive" },
-};
