@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, Heart, Share2, ShieldCheck, Star, MapPin, MessageCircle, Check, Flag, Droplets } from "lucide-react";
-import { AVAILABILITY_META, formatGHS, getHostel } from "@/lib/hostels";
+import { ArrowLeft, Heart, Share2, ShieldCheck, Star, MapPin, MessageCircle, Check, Flag, Droplets, Zap } from "lucide-react";
+import { AVAILABILITY_META, formatGHS, getHostel, getUtilities } from "@/lib/hostels";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_app/hostel/$id")({
