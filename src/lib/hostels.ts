@@ -378,3 +378,47 @@ export const AVAILABILITY_META: Record<Availability, { label: string; className:
   few: { label: "Few rooms left", className: "bg-warning/20 text-warning-foreground" },
   full: { label: "Fully booked", className: "bg-destructive/15 text-destructive" },
 };
+
+export type UtilityInfo = {
+  water: { included: boolean; note: string };
+  electricity: { included: boolean; meter: "private" | "shared" | "billed"; note: string };
+};
+
+export function getUtilities(hostel: Hostel): UtilityInfo {
+  const isSelf = hostel.roomTypes.includes("self-contained");
+  const premium = hostel.pricePerSemester >= 4500;
+  const budget = hostel.pricePerSemester < 2000;
+
+  if (premium || isSelf) {
+    return {
+      water: { included: true, note: "Water bill is included in the hostel fee." },
+      electricity: {
+        included: false,
+        meter: "private",
+        note: "Prepaid meter per room — you top up your own credit at the ECG vendor.",
+      },
+    };
+  }
+  if (budget) {
+    return {
+      water: { included: true, note: "Water is included, but supply may stop briefly during outages." },
+      electricity: {
+        included: false,
+        meter: "shared",
+        note: "One prepaid meter shared across the block — cost is split monthly among tenants.",
+      },
+    };
+  }
+  return {
+    water: { included: true, note: "Water bill is included in the semester fee." },
+    electricity: {
+      included: false,
+      meter: "shared",
+      note: "Prepaid meter shared between 2–4 rooms; residents split top-ups monthly.",
+    },
+  };
+}
+  available: { label: "Available", className: "bg-success/15 text-success" },
+  few: { label: "Few rooms left", className: "bg-warning/20 text-warning-foreground" },
+  full: { label: "Fully booked", className: "bg-destructive/15 text-destructive" },
+};
