@@ -142,7 +142,7 @@ export const HOSTELS: Hostel[] = [
     verified: true,
     availability: "full",
     roomTypes: ["single", "self-contained"],
-    amenities: ["Wi-Fi", "24/7 Water", "Security", "Kitchen", "AC", "Pool", "Gym", "Backup Power"],
+    amenities: ["Wi-Fi", "24/7 Water", "Security", "Kitchen", "AC", "Backup Power"],
     photos: [exterior2, roomSelf1, roomTwin3, exterior1],
     description: "Premium hostel with pool, gym and on-site cafe. Shuttle to campus every hour.",
     owner: { name: "Valco Properties Ltd.", responseRate: 100 },
