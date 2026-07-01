@@ -333,3 +333,15 @@ function HostelDetail() {
     </div>
   );
 }
+
+function Landmark({ className, label }: { className: string; label: string }) {
+  return (
+    <span className={cn("absolute flex items-center gap-1", className)}>
+      <span className="h-2 w-2 rounded-full bg-teal ring-2 ring-white/70" />
+      <span className="rounded bg-card/85 px-1.5 py-0.5 text-[9px] font-semibold text-foreground backdrop-blur">
+        {label}
+      </span>
+    </span>
+  );
+}
+
