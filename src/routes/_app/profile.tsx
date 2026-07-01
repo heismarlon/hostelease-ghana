@@ -114,10 +114,10 @@ function Profile() {
           <Row icon={User} label="Personal info" to="/personal-info" />
           <Row icon={Receipt} label="Receipts" to="/receipts" />
           <Row icon={Heart} label="Saved hostels" to="/saved" />
-          <Row icon={Users} label="Roommate matching" badge="New" to="/roommates" />
+          <Row icon={Users} label="Roommate matching" to="/roommates" />
           <Row icon={CreditCard} label="Payment methods" to="/payments" />
           <Row icon={Gift} label="Refer & earn GHS 20" onClick={handleRefer} />
-          <Row icon={Globe} label="Language" value="English" />
+          <Row icon={Globe} label="Language" to="/language" />
           <Row icon={LogOut} label="Sign out" danger onClick={signOut} />
         </div>
 
