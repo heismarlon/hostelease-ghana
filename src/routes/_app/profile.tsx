@@ -29,7 +29,8 @@ function Profile() {
   const [referralLink, setReferralLink] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  const signOut = () => {
+  const signOut = async () => {
+    await supabase.auth.signOut();
     if (typeof window !== "undefined") window.localStorage.removeItem("he_signed_in");
     navigate({ to: "/auth" });
   };
