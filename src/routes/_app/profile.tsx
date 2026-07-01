@@ -164,7 +164,7 @@ function Row({
   value?: string;
   badge?: string;
   danger?: boolean;
-  to?: "/saved" | "/payments" | "/personal-info" | "/receipts" | "/roommates";
+  to?: "/saved" | "/payments" | "/personal-info" | "/receipts" | "/roommates" | "/language";
   onClick?: () => void;
 }) {
   const content = (
