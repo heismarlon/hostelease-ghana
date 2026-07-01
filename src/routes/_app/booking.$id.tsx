@@ -19,7 +19,7 @@ export const Route = createFileRoute("/_app/booking/$id")({
   component: Booking,
 });
 
-const SERVICE_FEE_RATE = 0.05;
+const SERVICE_FEE_RATE = 0.015;
 
 type Method = "momo" | "bank" | "card";
 
