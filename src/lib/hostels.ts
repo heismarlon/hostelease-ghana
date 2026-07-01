@@ -363,7 +363,7 @@ export const HOSTELS: Hostel[] = [
 ];
 
 
-export const AMENITIES = ["Wi-Fi", "24/7 Water", "Security", "Kitchen", "Study Area", "AC", "Backup Power", "Pool", "Gym"];
+export const AMENITIES = ["Wi-Fi", "24/7 Water", "Security", "Kitchen", "Study Area", "AC", "Backup Power"];
 
 export function getHostel(id: string) {
   return HOSTELS.find((h) => h.id === id);
