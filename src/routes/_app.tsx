@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { BottomNav } from "@/components/BottomNav";
+import { supabase } from "@/integrations/supabase/client";
 
 const HIDE_NAV = ["/onboarding", "/auth", "/booking"];
 
@@ -15,12 +16,29 @@ function AppLayout() {
   const hideNav = HIDE_NAV.some((p) => pathname.startsWith(p));
 
   useEffect(() => {
-    const signedIn = typeof window !== "undefined" && window.localStorage.getItem("he_signed_in") === "1";
-    if (!signedIn) {
-      navigate({ to: "/auth" });
-    } else {
-      setChecked(true);
-    }
+    let mounted = true;
+
+    supabase.auth.getSession().then(({ data }) => {
+      if (!mounted) return;
+      if (data.session) {
+        if (typeof window !== "undefined") window.localStorage.setItem("he_signed_in", "1");
+        setChecked(true);
+      } else {
+        navigate({ to: "/auth" });
+      }
+    });
+
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session) {
+        if (typeof window !== "undefined") window.localStorage.removeItem("he_signed_in");
+        navigate({ to: "/auth" });
+      }
+    });
+
+    return () => {
+      mounted = false;
+      sub.subscription.unsubscribe();
+    };
   }, [navigate]);
 
   if (!checked) return null;

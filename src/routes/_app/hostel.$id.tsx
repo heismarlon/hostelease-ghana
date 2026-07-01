@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, Heart, Share2, ShieldCheck, Star, MapPin, MessageCircle, Check, Flag, Droplets } from "lucide-react";
-import { AVAILABILITY_META, formatGHS, getHostel } from "@/lib/hostels";
+import { ArrowLeft, Heart, Share2, ShieldCheck, Star, MapPin, MessageCircle, Check, Flag, Droplets, Zap } from "lucide-react";
+import { AVAILABILITY_META, formatGHS, getHostel, getUtilities } from "@/lib/hostels";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_app/hostel/$id")({
@@ -173,25 +173,100 @@ function HostelDetail() {
           </div>
         </section>
 
-        {/* Map placeholder */}
+        {/* Utilities */}
+        {(() => {
+          const u = getUtilities(hostel);
+          return (
+            <section>
+              <h2 className="font-display text-lg font-semibold">Utilities</h2>
+              <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl bg-card p-4 shadow-card">
+                  <div className="flex items-center gap-2">
+                    <span className="grid h-8 w-8 place-items-center rounded-full bg-teal/15 text-teal">
+                      <Droplets className="h-4 w-4" />
+                    </span>
+                    <p className="text-sm font-semibold">Water</p>
+                    <span className={cn(
+                      "ml-auto rounded-full px-2 py-0.5 text-[10px] font-bold",
+                      u.water.included ? "bg-success/15 text-success" : "bg-warning/20 text-warning-foreground",
+                    )}>
+                      {u.water.included ? "Included" : "Pay separate"}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{u.water.note}</p>
+                </div>
+                <div className="rounded-2xl bg-card p-4 shadow-card">
+                  <div className="flex items-center gap-2">
+                    <span className="grid h-8 w-8 place-items-center rounded-full bg-gold/15 text-gold">
+                      <Zap className="h-4 w-4" />
+                    </span>
+                    <p className="text-sm font-semibold">Electricity</p>
+                    <span className={cn(
+                      "ml-auto rounded-full px-2 py-0.5 text-[10px] font-bold",
+                      u.electricity.included
+                        ? "bg-success/15 text-success"
+                        : u.electricity.meter === "private"
+                        ? "bg-primary/15 text-primary"
+                        : "bg-warning/20 text-warning-foreground",
+                    )}>
+                      {u.electricity.included
+                        ? "Included"
+                        : u.electricity.meter === "private"
+                        ? "Prepaid · per room"
+                        : u.electricity.meter === "shared"
+                        ? "Prepaid · shared"
+                        : "Billed monthly"}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{u.electricity.note}</p>
+                </div>
+              </div>
+            </section>
+          );
+        })()}
+
+        {/* Location — UCC landmarks */}
         <section>
-          <h2 className="font-display text-lg font-semibold">Location</h2>
-          <div className="relative mt-3 aspect-[16/10] overflow-hidden rounded-2xl bg-gradient-to-br from-primary/15 via-accent to-gold/20">
+          <h2 className="font-display text-lg font-semibold">Location & landmarks</h2>
+          <div className="relative mt-3 aspect-[16/11] overflow-hidden rounded-2xl bg-gradient-to-br from-teal/15 via-accent to-gold/20">
+            {/* subtle grid */}
             <div
-              className="absolute inset-0 opacity-50"
+              className="absolute inset-0 opacity-40"
               style={{
                 backgroundImage:
-                  "repeating-linear-gradient(0deg, transparent 0 24px, oklch(0.27 0.07 260 / 0.08) 24px 25px), repeating-linear-gradient(90deg, transparent 0 24px, oklch(0.27 0.07 260 / 0.08) 24px 25px)",
+                  "repeating-linear-gradient(0deg, transparent 0 28px, oklch(0.27 0.07 260 / 0.08) 28px 29px), repeating-linear-gradient(90deg, transparent 0 28px, oklch(0.27 0.07 260 / 0.08) 28px 29px)",
               }}
             />
-            <span className="absolute left-1/2 top-1/2 grid h-12 w-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-primary text-primary-foreground shadow-float">
-              <MapPin className="h-5 w-5" />
+            {/* road */}
+            <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-foreground/25" />
+            <span className="absolute left-3 top-[calc(50%-14px)] rounded bg-card/80 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-muted-foreground backdrop-blur">Cape Coast – Accra Rd</span>
+
+            {/* Landmarks around UCC */}
+            <Landmark className="left-[8%] top-[14%]" label="Main Gate" />
+            <Landmark className="left-[28%] top-[26%]" label="Science" />
+            <Landmark className="left-[54%] top-[18%]" label="Casford Hall" />
+            <Landmark className="left-[76%] top-[28%]" label="Valco Hall" />
+            <Landmark className="left-[18%] top-[70%]" label="Amamoma Gate" />
+            <Landmark className="left-[42%] top-[78%]" label="Apewosika Jct" />
+            <Landmark className="left-[68%] top-[74%]" label="Kwaprow" />
+            <Landmark className="left-[88%] top-[62%]" label="Old Site" />
+
+            {/* Hostel marker */}
+            <span className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
+              <span className="relative grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-float ring-4 ring-white/60">
+                <MapPin className="h-5 w-5" />
+              </span>
+              <span className="absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-card/95 px-2 py-0.5 text-[10px] font-bold shadow-card">
+                {hostel.name}
+              </span>
             </span>
+
             <span className="absolute bottom-3 left-3 rounded-full bg-card/90 px-3 py-1 text-[11px] font-semibold backdrop-blur">
-              {hostel.distanceKm} km from main gate
+              {hostel.distanceKm} km from Main Gate
             </span>
           </div>
         </section>
+
 
         {/* Reviews */}
         <section>
@@ -258,3 +333,15 @@ function HostelDetail() {
     </div>
   );
 }
+
+function Landmark({ className, label }: { className: string; label: string }) {
+  return (
+    <span className={cn("absolute flex items-center gap-1", className)}>
+      <span className="h-2 w-2 rounded-full bg-teal ring-2 ring-white/70" />
+      <span className="rounded bg-card/85 px-1.5 py-0.5 text-[9px] font-semibold text-foreground backdrop-blur">
+        {label}
+      </span>
+    </span>
+  );
+}
+

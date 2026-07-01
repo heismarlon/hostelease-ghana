@@ -183,5 +183,29 @@
 }
 
 @utility bg-hero-gradient {
+  position: relative;
+  isolation: isolate;
   background-image: linear-gradient(135deg, #57218C 0%, #931082 100%);
 }
+
+.bg-hero-gradient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.6) 1.2px, transparent 1.6px);
+  background-size: 12px 12px;
+  background-position: right top;
+  -webkit-mask-image: linear-gradient(to left, black 0%, transparent 55%);
+  mask-image: linear-gradient(to left, black 0%, transparent 55%);
+}
+
+.bg-hero-gradient > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+
+

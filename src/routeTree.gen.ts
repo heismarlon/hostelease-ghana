@@ -22,6 +22,7 @@ import { Route as AppProfileRouteImport } from './routes/_app/profile'
 import { Route as AppPersonalInfoRouteImport } from './routes/_app/personal-info'
 import { Route as AppPaymentsRouteImport } from './routes/_app/payments'
 import { Route as AppMessagesRouteImport } from './routes/_app/messages'
+import { Route as AppLanguageRouteImport } from './routes/_app/language'
 import { Route as AppCompareRouteImport } from './routes/_app/compare'
 import { Route as AppHostelIdRouteImport } from './routes/_app/hostel.$id'
 import { Route as AppBookingIdRouteImport } from './routes/_app/booking.$id'
@@ -90,6 +91,11 @@ const AppMessagesRoute = AppMessagesRouteImport.update({
   path: '/messages',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLanguageRoute = AppLanguageRouteImport.update({
+  id: '/language',
+  path: '/language',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCompareRoute = AppCompareRouteImport.update({
   id: '/compare',
   path: '/compare',
@@ -111,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
   '/compare': typeof AppCompareRoute
+  '/language': typeof AppLanguageRoute
   '/messages': typeof AppMessagesRoute
   '/payments': typeof AppPaymentsRoute
   '/personal-info': typeof AppPersonalInfoRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
   '/compare': typeof AppCompareRoute
+  '/language': typeof AppLanguageRoute
   '/messages': typeof AppMessagesRoute
   '/payments': typeof AppPaymentsRoute
   '/personal-info': typeof AppPersonalInfoRoute
@@ -146,6 +154,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
   '/_app/compare': typeof AppCompareRoute
+  '/_app/language': typeof AppLanguageRoute
   '/_app/messages': typeof AppMessagesRoute
   '/_app/payments': typeof AppPaymentsRoute
   '/_app/personal-info': typeof AppPersonalInfoRoute
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/onboarding'
     | '/compare'
+    | '/language'
     | '/messages'
     | '/payments'
     | '/personal-info'
@@ -182,6 +192,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/onboarding'
     | '/compare'
+    | '/language'
     | '/messages'
     | '/payments'
     | '/personal-info'
@@ -200,6 +211,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/onboarding'
     | '/_app/compare'
+    | '/_app/language'
     | '/_app/messages'
     | '/_app/payments'
     | '/_app/personal-info'
@@ -314,6 +326,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMessagesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/language': {
+      id: '/_app/language'
+      path: '/language'
+      fullPath: '/language'
+      preLoaderRoute: typeof AppLanguageRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/compare': {
       id: '/_app/compare'
       path: '/compare'
@@ -340,6 +359,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppCompareRoute: typeof AppCompareRoute
+  AppLanguageRoute: typeof AppLanguageRoute
   AppMessagesRoute: typeof AppMessagesRoute
   AppPaymentsRoute: typeof AppPaymentsRoute
   AppPersonalInfoRoute: typeof AppPersonalInfoRoute
@@ -355,6 +375,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppCompareRoute: AppCompareRoute,
+  AppLanguageRoute: AppLanguageRoute,
   AppMessagesRoute: AppMessagesRoute,
   AppPaymentsRoute: AppPaymentsRoute,
   AppPersonalInfoRoute: AppPersonalInfoRoute,

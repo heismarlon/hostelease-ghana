@@ -142,7 +142,7 @@ export const HOSTELS: Hostel[] = [
     verified: true,
     availability: "full",
     roomTypes: ["single", "self-contained"],
-    amenities: ["Wi-Fi", "24/7 Water", "Security", "Kitchen", "AC", "Pool", "Gym", "Backup Power"],
+    amenities: ["Wi-Fi", "24/7 Water", "Security", "Kitchen", "AC", "Backup Power"],
     photos: [exterior2, roomSelf1, roomTwin3, exterior1],
     description: "Premium hostel with pool, gym and on-site cafe. Shuttle to campus every hour.",
     owner: { name: "Valco Properties Ltd.", responseRate: 100 },
@@ -363,7 +363,7 @@ export const HOSTELS: Hostel[] = [
 ];
 
 
-export const AMENITIES = ["Wi-Fi", "24/7 Water", "Security", "Kitchen", "Study Area", "AC", "Backup Power", "Pool", "Gym"];
+export const AMENITIES = ["Wi-Fi", "24/7 Water", "Security", "Kitchen", "Study Area", "AC", "Backup Power"];
 
 export function getHostel(id: string) {
   return HOSTELS.find((h) => h.id === id);
@@ -378,3 +378,43 @@ export const AVAILABILITY_META: Record<Availability, { label: string; className:
   few: { label: "Few rooms left", className: "bg-warning/20 text-warning-foreground" },
   full: { label: "Fully booked", className: "bg-destructive/15 text-destructive" },
 };
+
+export type UtilityInfo = {
+  water: { included: boolean; note: string };
+  electricity: { included: boolean; meter: "private" | "shared" | "billed"; note: string };
+};
+
+export function getUtilities(hostel: Hostel): UtilityInfo {
+  const isSelf = hostel.roomTypes.includes("self-contained");
+  const premium = hostel.pricePerSemester >= 4500;
+  const budget = hostel.pricePerSemester < 2000;
+
+  if (premium || isSelf) {
+    return {
+      water: { included: true, note: "Water bill is included in the hostel fee." },
+      electricity: {
+        included: false,
+        meter: "private",
+        note: "Prepaid meter per room — you top up your own credit at the ECG vendor.",
+      },
+    };
+  }
+  if (budget) {
+    return {
+      water: { included: true, note: "Water is included, but supply may stop briefly during outages." },
+      electricity: {
+        included: false,
+        meter: "shared",
+        note: "One prepaid meter shared across the block — cost is split monthly among tenants.",
+      },
+    };
+  }
+  return {
+    water: { included: true, note: "Water bill is included in the semester fee." },
+    electricity: {
+      included: false,
+      meter: "shared",
+      note: "Prepaid meter shared between 2–4 rooms; residents split top-ups monthly.",
+    },
+  };
+}

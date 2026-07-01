@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Check, ChevronRight, Copy, CreditCard, Gift, Globe, Heart, LogOut, Moon, Receipt, ShieldCheck, Sun, User, Users } from "lucide-react";
 import { useTheme, type Theme } from "@/lib/theme";
+import { supabase } from "@/integrations/supabase/client";
 
 
 export const Route = createFileRoute("/_app/profile")({
@@ -28,7 +29,8 @@ function Profile() {
   const [referralLink, setReferralLink] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  const signOut = () => {
+  const signOut = async () => {
+    await supabase.auth.signOut();
     if (typeof window !== "undefined") window.localStorage.removeItem("he_signed_in");
     navigate({ to: "/auth" });
   };
@@ -114,10 +116,10 @@ function Profile() {
           <Row icon={User} label="Personal info" to="/personal-info" />
           <Row icon={Receipt} label="Receipts" to="/receipts" />
           <Row icon={Heart} label="Saved hostels" to="/saved" />
-          <Row icon={Users} label="Roommate matching" badge="New" to="/roommates" />
+          <Row icon={Users} label="Roommate matching" to="/roommates" />
           <Row icon={CreditCard} label="Payment methods" to="/payments" />
           <Row icon={Gift} label="Refer & earn GHS 20" onClick={handleRefer} />
-          <Row icon={Globe} label="Language" value="English" />
+          <Row icon={Globe} label="Language" to="/language" />
           <Row icon={LogOut} label="Sign out" danger onClick={signOut} />
         </div>
 
@@ -164,7 +166,7 @@ function Row({
   value?: string;
   badge?: string;
   danger?: boolean;
-  to?: "/saved" | "/payments" | "/personal-info" | "/receipts" | "/roommates";
+  to?: "/saved" | "/payments" | "/personal-info" | "/receipts" | "/roommates" | "/language";
   onClick?: () => void;
 }) {
   const content = (

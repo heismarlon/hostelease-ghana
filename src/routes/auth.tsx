@@ -1,7 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { GraduationCap, Home } from "lucide-react";
+import { GraduationCap, Home, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({ meta: [{ title: "Sign in — HostelEase" }] }),
@@ -11,7 +12,49 @@ export const Route = createFileRoute("/auth")({
 function Auth() {
   const [role, setRole] = useState<"student" | "owner">("student");
   const [mode, setMode] = useState<"login" | "signup">("signup");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      if (mode === "signup") {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: window.location.origin,
+            data: {
+              full_name: fullName,
+              role,
+              university: role === "student" ? "UCC" : "",
+            },
+          },
+        });
+        if (error) throw error;
+        if (!data.session) {
+          // If email confirmation is required, try sign-in
+          const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
+          if (signInErr) throw signInErr;
+        }
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+      }
+      if (typeof window !== "undefined") window.localStorage.setItem("he_signed_in", "1");
+      navigate({ to: "/" });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="mx-auto min-h-screen max-w-md bg-background px-6 pt-12 pb-10">
@@ -21,7 +64,7 @@ function Auth() {
           {mode === "signup" ? "Create your account" : "Welcome back"}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          {mode === "signup" ? "It takes less than a minute." : "Sign in to continue your search."}
+          {mode === "signup" ? "It takes less than a minute — your account is saved securely." : "Sign in to continue your search."}
         </p>
       </div>
 
@@ -35,23 +78,27 @@ function Auth() {
         </div>
       )}
 
-      <form
-        className="mt-6 space-y-3"
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (typeof window !== "undefined") window.localStorage.setItem("he_signed_in", "1");
-          navigate({ to: "/" });
-        }}
-      >
+      <form className="mt-6 space-y-3" onSubmit={submit}>
         {mode === "signup" && (
-          <Field label="Full name" type="text" placeholder="Akua Mensah" />
+          <Field label="Full name" type="text" placeholder="Akua Mensah" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
         )}
         <Field
-          label={role === "student" && mode === "signup" ? "University email" : "Email or phone"}
+          label={role === "student" && mode === "signup" ? "University email" : "Email"}
           type="email"
           placeholder={role === "student" && mode === "signup" ? "you@stu.ucc.edu.gh" : "you@example.com"}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
         />
-        <Field label="Password" type="password" placeholder="••••••••" />
+        <Field
+          label="Password"
+          type="password"
+          placeholder="••••••••"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          minLength={6}
+          required
+        />
 
         {mode === "signup" && role === "student" && (
           <p className="rounded-xl bg-secondary px-3 py-2 text-[11px] text-muted-foreground">
@@ -59,22 +106,23 @@ function Auth() {
           </p>
         )}
 
-        <button type="submit" className="mt-2 w-full rounded-2xl bg-gold py-3.5 text-sm font-bold text-gold-foreground shadow-gold">
+        {error && (
+          <p className="rounded-xl bg-destructive/10 px-3 py-2 text-[12px] text-destructive">{error}</p>
+        )}
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="mt-2 flex w-full items-center justify-center gap-2 rounded-2xl bg-gold py-3.5 text-sm font-bold text-gold-foreground shadow-gold disabled:opacity-70"
+        >
+          {loading && <Loader2 className="h-4 w-4 animate-spin" />}
           {mode === "signup" ? "Create account" : "Sign in"}
         </button>
       </form>
 
-      <div className="my-6 flex items-center gap-3 text-[11px] text-muted-foreground">
-        <span className="h-px flex-1 bg-border" /> or continue with <span className="h-px flex-1 bg-border" />
-      </div>
-      <div className="grid grid-cols-2 gap-2">
-        <button className="rounded-2xl border border-border bg-card py-3 text-sm font-semibold">Google</button>
-        <button className="rounded-2xl border border-border bg-card py-3 text-sm font-semibold">Phone OTP</button>
-      </div>
-
       <p className="mt-8 text-center text-xs text-muted-foreground">
         {mode === "signup" ? "Already have an account?" : "New to HostelEase?"}{" "}
-        <button onClick={() => setMode(mode === "signup" ? "login" : "signup")} className="font-semibold text-primary">
+        <button onClick={() => { setMode(mode === "signup" ? "login" : "signup"); setError(null); }} className="font-semibold text-primary">
           {mode === "signup" ? "Sign in" : "Create one"}
         </button>
       </p>

@@ -16,7 +16,7 @@ const INITIAL: UIMessage[] = [
     parts: [
       {
         type: "text",
-        text: "Hi Marlon 👋 I'm your HostelEase assistant. Ask me about hostels near UCC, payment options, our 5% service fee, or follow up on a booking — I'll read and help.",
+        text: "Hi Marlon 👋 I'm your HostelEase assistant. Ask me about hostels near UCC, payment options, our 1.5% service fee, or follow up on a booking — I'll read and help.",
       },
     ],
   },
