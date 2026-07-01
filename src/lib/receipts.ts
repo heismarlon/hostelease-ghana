@@ -119,7 +119,7 @@ export function downloadReceipt(r: Receipt) {
 
   feeRow("Semester rent", formatGHS(rent));
   feeRow("Refundable deposit", formatGHS(deposit));
-  feeRow("Service fee (5%)", formatGHS(r.serviceFee));
+  feeRow("Service fee (1.5%)", formatGHS(r.serviceFee));
 
   // divider
   doc.setDrawColor(236, 232, 241);
