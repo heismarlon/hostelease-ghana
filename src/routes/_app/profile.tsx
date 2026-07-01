@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Check, ChevronRight, Copy, CreditCard, Gift, Globe, Heart, LogOut, Moon, Receipt, ShieldCheck, Sun, User, Users } from "lucide-react";
 import { useTheme, type Theme } from "@/lib/theme";
+import { supabase } from "@/integrations/supabase/client";
 
 
 export const Route = createFileRoute("/_app/profile")({
