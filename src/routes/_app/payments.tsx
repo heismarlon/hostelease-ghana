@@ -13,7 +13,7 @@ type Method =
   | { id: string; kind: "card"; label: string; sub: string };
 
 const INITIAL: Method[] = [
-  { id: "m1", kind: "momo", label: "MTN MoMo", sub: "024 •••• 1245 · Marlon B." },
+  { id: "m1", kind: "momo", label: "MTN MoMo", sub: "024 •••• 1245" },
   { id: "m2", kind: "bank", label: "GCB Bank", sub: "•••• •••• 8821" },
   { id: "m3", kind: "card", label: "Visa debit", sub: "•••• •••• •••• 4242 · exp 09/27" },
 ];
@@ -25,8 +25,7 @@ function Payments() {
   const [activeId, setActiveId] = useState<string>(INITIAL[0].id);
   const [adding, setAdding] = useState<null | Method["kind"]>(null);
 
-  const remove = (id: string) =>
-    setMethods((m) => m.filter((x) => x.id !== id));
+  const remove = (id: string) => setMethods((m) => m.filter((x) => x.id !== id));
 
   const add = (kind: Method["kind"], label: string, sub: string) => {
     const m: Method = { id: crypto.randomUUID(), kind, label, sub };
@@ -69,10 +68,7 @@ function Payments() {
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-secondary text-primary">
                   <Icon className="h-5 w-5" />
                 </span>
-                <button
-                  onClick={() => setActiveId(m.id)}
-                  className="min-w-0 flex-1 text-left"
-                >
+                <button onClick={() => setActiveId(m.id)} className="min-w-0 flex-1 text-left">
                   <p className="truncate text-sm font-semibold">{m.label}</p>
                   <p className="truncate text-[11px] text-muted-foreground">{m.sub}</p>
                 </button>
@@ -120,9 +116,7 @@ function Payments() {
         </div>
       </section>
 
-      {adding && (
-        <AddSheet kind={adding} onClose={() => setAdding(null)} onAdd={add} />
-      )}
+      {adding && <AddSheet kind={adding} onClose={() => setAdding(null)} onAdd={add} />}
     </div>
   );
 }
@@ -166,7 +160,12 @@ function AddSheet({
           )}
           {kind === "card" && (
             <>
-              <Input label="Card number" value={a} onChange={setA} placeholder="4242 4242 4242 4242" />
+              <Input
+                label="Card number"
+                value={a}
+                onChange={setA}
+                placeholder="4242 4242 4242 4242"
+              />
               <Input label="Expiry" value={b} onChange={setB} placeholder="MM/YY" />
             </>
           )}
