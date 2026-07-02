@@ -1,13 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bell, MapPin, SlidersHorizontal, Sparkles } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { HOSTELS } from "@/lib/hostels";
 import { HostelCard } from "@/components/HostelCard";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_app/")({
   head: () => ({
     meta: [
       { title: "HostelEase — Find verified UCC hostels" },
-      { name: "description", content: "Discover, compare and book verified off-campus hostels near the University of Cape Coast. Pay with Mobile Money." },
+      {
+        name: "description",
+        content:
+          "Discover, compare and book verified off-campus hostels near the University of Cape Coast. Pay with Mobile Money.",
+      },
     ],
   }),
   component: Discover,
@@ -16,6 +22,25 @@ export const Route = createFileRoute("/_app/")({
 function Discover() {
   const popular = HOSTELS;
   const nearby = [...HOSTELS].sort((a, b) => a.distanceKm - b.distanceKm).slice(0, 3);
+
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return null;
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+      if (error) throw error;
+      return { ...data, email: user.email ?? "" };
+    },
+  });
+
+  const firstName = profile?.full_name?.split(" ")[0] || "there";
 
   return (
     <div className="space-y-6">
@@ -28,11 +53,16 @@ function Discover() {
               University of Cape Coast
             </p>
             <h1 className="mt-1 font-display text-2xl font-bold leading-tight">
-              Hi Marlon, find your<br />next home <span className="text-gold">near campus</span>
+              Hi {firstName}, find your
+              <br />
+              next home <span className="text-gold">near campus</span>
             </h1>
-
           </div>
-          <button type="button" className="grid h-10 w-10 place-items-center rounded-full bg-white/10" aria-label="Notifications">
+          <button
+            type="button"
+            className="grid h-10 w-10 place-items-center rounded-full bg-white/10"
+            aria-label="Notifications"
+          >
             <Bell className="h-4 w-4" />
             <span className="absolute mt-[-18px] ml-5 h-2 w-2 rounded-full bg-gold" />
           </button>
@@ -69,7 +99,9 @@ function Discover() {
             <h2 className="font-display text-xl font-semibold">Closest to you</h2>
             <p className="text-xs text-muted-foreground">Sorted by walking distance</p>
           </div>
-          <Link to="/search" className="text-xs font-semibold text-primary">See all</Link>
+          <Link to="/search" className="text-xs font-semibold text-primary">
+            See all
+          </Link>
         </div>
         <div className="no-scrollbar flex gap-3 overflow-x-auto px-5 pb-1">
           {nearby.map((h) => (
@@ -84,7 +116,9 @@ function Discover() {
       <section className="space-y-3 px-5">
         <div className="flex items-end justify-between">
           <h2 className="font-display text-xl font-semibold">Popular this week</h2>
-          <Link to="/search" className="text-xs font-semibold text-primary">See all</Link>
+          <Link to="/search" className="text-xs font-semibold text-primary">
+            See all
+          </Link>
         </div>
         <div className="grid gap-4">
           {popular.map((h) => (

@@ -3,24 +3,28 @@ import { useEffect, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { Send, ShieldCheck, Sparkles } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_app/messages")({
   head: () => ({ meta: [{ title: "Messages — HostelEase" }] }),
   component: Messages,
 });
 
-const INITIAL: UIMessage[] = [
-  {
-    id: "welcome-1",
-    role: "assistant",
-    parts: [
-      {
-        type: "text",
-        text: "Hi Marlon 👋 I'm your HostelEase assistant. Ask me about hostels near UCC, payment options, our 1.5% service fee, or follow up on a booking — I'll read and help.",
-      },
-    ],
-  },
-];
+function buildInitialMessages(firstName: string): UIMessage[] {
+  return [
+    {
+      id: "welcome-1",
+      role: "assistant",
+      parts: [
+        {
+          type: "text",
+          text: `Hi ${firstName} 👋 I'm your HostelEase assistant. Ask me about hostels near UCC, payment options, our 1.5% service fee, or follow up on a booking — I'll read and help.`,
+        },
+      ],
+    },
+  ];
+}
 
 function renderText(m: UIMessage) {
   return m.parts.map((p, i) => (p.type === "text" ? <span key={i}>{p.text}</span> : null));
@@ -30,9 +34,28 @@ function Messages() {
   const [input, setInput] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
 
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return null;
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+      if (error) throw error;
+      return { ...data, email: user.email ?? "" };
+    },
+  });
+
+  const firstName = profile?.full_name?.split(" ")[0] || "there";
+
   const { messages, sendMessage, status, error } = useChat({
     transport: new DefaultChatTransport({ api: "/api/chat" }),
-    messages: INITIAL,
+    messages: buildInitialMessages(firstName),
   });
 
   useEffect(() => {
@@ -88,7 +111,9 @@ function Messages() {
           </div>
         )}
         {error && (
-          <p className="text-center text-xs text-destructive">Couldn't reach the assistant. Try again.</p>
+          <p className="text-center text-xs text-destructive">
+            Couldn't reach the assistant. Try again.
+          </p>
         )}
         <div ref={endRef} />
       </div>
