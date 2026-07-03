@@ -30,6 +30,8 @@ function Profile() {
   const [theme, setTheme] = useTheme();
   const [referralLink, setReferralLink] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const { profile } = useProfile();
+
 
   const signOut = async () => {
     await supabase.auth.signOut();
