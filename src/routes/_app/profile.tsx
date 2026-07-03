@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Check, ChevronRight, Copy, CreditCard, Gift, Globe, Heart, LogOut, Moon, Receipt, ShieldCheck, Sun, User, Users } from "lucide-react";
 import { useTheme, type Theme } from "@/lib/theme";
 import { supabase } from "@/integrations/supabase/client";
+import { useProfile, initials } from "@/lib/use-profile";
+
 
 
 export const Route = createFileRoute("/_app/profile")({
@@ -28,6 +30,8 @@ function Profile() {
   const [theme, setTheme] = useTheme();
   const [referralLink, setReferralLink] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const { profile } = useProfile();
+
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -58,12 +62,17 @@ function Profile() {
 
         <div className="flex items-center gap-4">
           <div className="grid h-16 w-16 place-items-center rounded-full bg-gold font-display text-2xl font-bold text-gold-foreground">
-            MB
+            {initials(profile?.full_name)}
           </div>
           <div className="min-w-0">
-            <h1 className="truncate font-display text-xl font-semibold">Marlon Bilson</h1>
-            <p className="truncate text-xs text-primary-foreground/70">BSc Computer Science · L300 · UCC</p>
+            <h1 className="truncate font-display text-xl font-semibold">{profile?.full_name || "Your account"}</h1>
+            <p className="truncate text-xs text-primary-foreground/70">
+              {[profile?.programme, profile?.level && `L${profile.level}`, profile?.university]
+                .filter(Boolean)
+                .join(" · ") || "Complete your profile"}
+            </p>
             <p className="mt-1 inline-flex items-center gap-1 text-[11px] font-medium text-gold">
+
               <ShieldCheck className="h-3 w-3" /> Verified student
             </p>
           </div>

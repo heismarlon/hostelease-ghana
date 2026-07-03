@@ -13,6 +13,10 @@ function Auth() {
   const [role, setRole] = useState<"student" | "owner">("student");
   const [mode, setMode] = useState<"login" | "signup">("signup");
   const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [university, setUniversity] = useState("University of Cape Coast (UCC)");
+  const [programme, setProgramme] = useState("");
+  const [level, setLevel] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -33,15 +37,30 @@ function Auth() {
             data: {
               full_name: fullName,
               role,
-              university: role === "student" ? "UCC" : "",
+              phone,
+              university: role === "student" ? university : "",
+              programme: role === "student" ? programme : "",
+              level: role === "student" ? level : "",
             },
           },
         });
         if (error) throw error;
         if (!data.session) {
-          // If email confirmation is required, try sign-in
           const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
           if (signInErr) throw signInErr;
+        }
+        // Ensure profile row reflects the details even if trigger raced
+        const { data: userRes } = await supabase.auth.getUser();
+        if (userRes.user) {
+          await supabase.from("profiles").upsert({
+            id: userRes.user.id,
+            full_name: fullName,
+            role,
+            phone,
+            university: role === "student" ? university : "",
+            programme: role === "student" ? programme : "",
+            level: role === "student" ? level : "",
+          });
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -55,6 +74,7 @@ function Auth() {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="mx-auto min-h-screen max-w-md bg-background px-6 pt-12 pb-10">
@@ -80,7 +100,19 @@ function Auth() {
 
       <form className="mt-6 space-y-3" onSubmit={submit}>
         {mode === "signup" && (
-          <Field label="Full name" type="text" placeholder="Akua Mensah" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+          <>
+            <Field label="Full name" type="text" placeholder="Akua Mensah" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+            <Field label="Phone" type="tel" placeholder="+233 24 000 0000" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            {role === "student" && (
+              <>
+                <Field label="University" type="text" placeholder="University of Cape Coast (UCC)" value={university} onChange={(e) => setUniversity(e.target.value)} />
+                <div className="grid grid-cols-2 gap-3">
+                  <Field label="Programme" type="text" placeholder="BSc Computer Science" value={programme} onChange={(e) => setProgramme(e.target.value)} />
+                  <Field label="Level" type="text" placeholder="300" value={level} onChange={(e) => setLevel(e.target.value)} />
+                </div>
+              </>
+            )}
+          </>
         )}
         <Field
           label={role === "student" && mode === "signup" ? "University email" : "Email"}
@@ -99,6 +131,7 @@ function Auth() {
           minLength={6}
           required
         />
+
 
         {mode === "signup" && role === "student" && (
           <p className="rounded-xl bg-secondary px-3 py-2 text-[11px] text-muted-foreground">

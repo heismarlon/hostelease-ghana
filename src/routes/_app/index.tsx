@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bell, MapPin, SlidersHorizontal, Sparkles } from "lucide-react";
+import { Bell, Laptop, MapPin, SlidersHorizontal, Sparkles } from "lucide-react";
 import { HOSTELS } from "@/lib/hostels";
 import { HostelCard } from "@/components/HostelCard";
+import { useProfile, firstName } from "@/lib/use-profile";
+
 
 export const Route = createFileRoute("/_app/")({
   head: () => ({
@@ -16,6 +18,19 @@ export const Route = createFileRoute("/_app/")({
 function Discover() {
   const popular = HOSTELS;
   const nearby = [...HOSTELS].sort((a, b) => a.distanceKm - b.distanceKm).slice(0, 3);
+  const { profile } = useProfile();
+  const first = firstName(profile?.full_name) || "there";
+
+  const openDesktop = () => {
+    if (typeof window === "undefined") return;
+    const url = window.location.origin;
+    try {
+      navigator.clipboard?.writeText(url);
+    } catch {
+      // ignore
+    }
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <div className="space-y-6">
@@ -25,10 +40,10 @@ function Discover() {
           <div>
             <p className="flex items-center gap-1 text-xs font-medium text-white/75">
               <MapPin className="h-3 w-3" />
-              University of Cape Coast
+              {profile?.university || "University of Cape Coast"}
             </p>
             <h1 className="mt-1 font-display text-2xl font-bold leading-tight">
-              Hi Marlon, find your<br />next home <span className="text-gold">near campus</span>
+              Hi {first}, find your<br />next home <span className="text-gold">near campus</span>
             </h1>
 
           </div>
@@ -47,7 +62,17 @@ function Discover() {
             <SlidersHorizontal className="h-4 w-4" />
           </span>
         </Link>
+
+        <button
+          type="button"
+          onClick={openDesktop}
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl border border-white/25 bg-white/10 px-3 py-2.5 text-xs font-semibold text-white"
+        >
+          <Laptop className="h-4 w-4" />
+          Continue on desktop · link copied
+        </button>
       </header>
+
 
       {/* Promo */}
       <section className="mx-5 rounded-2xl border border-gold/30 bg-gold/10 p-4">
