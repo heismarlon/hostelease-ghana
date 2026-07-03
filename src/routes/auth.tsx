@@ -13,6 +13,10 @@ function Auth() {
   const [role, setRole] = useState<"student" | "owner">("student");
   const [mode, setMode] = useState<"login" | "signup">("signup");
   const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [university, setUniversity] = useState("University of Cape Coast (UCC)");
+  const [programme, setProgramme] = useState("");
+  const [level, setLevel] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -33,15 +37,30 @@ function Auth() {
             data: {
               full_name: fullName,
               role,
-              university: role === "student" ? "UCC" : "",
+              phone,
+              university: role === "student" ? university : "",
+              programme: role === "student" ? programme : "",
+              level: role === "student" ? level : "",
             },
           },
         });
         if (error) throw error;
         if (!data.session) {
-          // If email confirmation is required, try sign-in
           const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
           if (signInErr) throw signInErr;
+        }
+        // Ensure profile row reflects the details even if trigger raced
+        const { data: userRes } = await supabase.auth.getUser();
+        if (userRes.user) {
+          await supabase.from("profiles").upsert({
+            id: userRes.user.id,
+            full_name: fullName,
+            role,
+            phone,
+            university: role === "student" ? university : "",
+            programme: role === "student" ? programme : "",
+            level: role === "student" ? level : "",
+          });
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -55,6 +74,7 @@ function Auth() {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="mx-auto min-h-screen max-w-md bg-background px-6 pt-12 pb-10">
