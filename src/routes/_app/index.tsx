@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bell, MapPin, SlidersHorizontal, Sparkles } from "lucide-react";
+import { Bell, Laptop, MapPin, SlidersHorizontal, Sparkles } from "lucide-react";
 import { HOSTELS } from "@/lib/hostels";
 import { HostelCard } from "@/components/HostelCard";
+import { useProfile, firstName } from "@/lib/use-profile";
+
 
 export const Route = createFileRoute("/_app/")({
   head: () => ({
