@@ -40,7 +40,7 @@ export function useProfile() {
   }, [load]);
 
   const save = useCallback(
-    async (patch: Partial<Profile>) => {
+    async (patch: Partial<Omit<Profile, "email" | "id">>) => {
       const { data: userRes } = await supabase.auth.getUser();
       const user = userRes.user;
       if (!user) return;
