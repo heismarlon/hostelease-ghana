@@ -44,8 +44,8 @@ function AppLayout() {
   if (!checked) return null;
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background">
-      <main className={hideNav ? "flex-1" : "flex-1 pb-24"}>
+    <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background md:max-w-3xl lg:max-w-5xl">
+      <main className={hideNav ? "flex-1" : "flex-1 pb-24 md:pb-8"}>
         <Outlet />
       </main>
       {!hideNav && <BottomNav />}
