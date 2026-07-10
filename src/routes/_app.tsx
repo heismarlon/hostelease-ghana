@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { BottomNav } from "@/components/BottomNav";
+import { MobileMenu } from "@/components/MobileMenu";
 import { supabase } from "@/integrations/supabase/client";
 
 const HIDE_NAV = ["/onboarding", "/auth", "/booking"];
@@ -45,7 +46,8 @@ function AppLayout() {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background md:max-w-3xl lg:max-w-5xl">
-      <main className={hideNav ? "flex-1" : "flex-1 pb-24 md:pb-8"}>
+      {!hideNav && <MobileMenu />}
+      <main className={hideNav ? "flex-1" : "flex-1 pt-14 pb-24 md:pb-8"}>
         <Outlet />
       </main>
       {!hideNav && <BottomNav />}
