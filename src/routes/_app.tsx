@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { BottomNav } from "@/components/BottomNav";
+import { MobileMenu } from "@/components/MobileMenu";
 import { supabase } from "@/integrations/supabase/client";
 
 const HIDE_NAV = ["/onboarding", "/auth", "/booking"];
