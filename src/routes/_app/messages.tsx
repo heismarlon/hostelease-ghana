@@ -3,24 +3,28 @@ import { useEffect, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { Send, ShieldCheck, Sparkles } from "lucide-react";
+import { useProfile, firstName } from "@/lib/use-profile";
 
 export const Route = createFileRoute("/_app/messages")({
   head: () => ({ meta: [{ title: "Messages — HostelEase" }] }),
   component: Messages,
 });
 
-const INITIAL: UIMessage[] = [
-  {
-    id: "welcome-1",
-    role: "assistant",
-    parts: [
-      {
-        type: "text",
-        text: "Hi Marlon 👋 I'm your HostelEase assistant. Ask me about hostels near UCC, payment options, our 1.5% service fee, or follow up on a booking — I'll read and help.",
-      },
-    ],
-  },
-];
+function makeInitial(name: string): UIMessage[] {
+  return [
+    {
+      id: "welcome-1",
+      role: "assistant",
+      parts: [
+        {
+          type: "text",
+          text: `Hi ${name} 👋 I'm your HostelEase assistant. Ask me about hostels near UCC, payment options, our 1.5% service fee, or follow up on a booking — I'll read and help.`,
+        },
+      ],
+    },
+  ];
+}
+
 
 function renderText(m: UIMessage) {
   return m.parts.map((p, i) => (p.type === "text" ? <span key={i}>{p.text}</span> : null));
@@ -29,11 +33,15 @@ function renderText(m: UIMessage) {
 function Messages() {
   const [input, setInput] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
+  const { profile } = useProfile();
+  const first = firstName(profile?.full_name) || "there";
 
   const { messages, sendMessage, status, error } = useChat({
+    id: profile?.id ?? "guest",
     transport: new DefaultChatTransport({ api: "/api/chat" }),
-    messages: INITIAL,
+    messages: makeInitial(first),
   });
+
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
