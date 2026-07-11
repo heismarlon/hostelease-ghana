@@ -33,11 +33,15 @@ function renderText(m: UIMessage) {
 function Messages() {
   const [input, setInput] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
+  const { profile } = useProfile();
+  const first = firstName(profile?.full_name) || "there";
 
   const { messages, sendMessage, status, error } = useChat({
+    id: profile?.id ?? "guest",
     transport: new DefaultChatTransport({ api: "/api/chat" }),
-    messages: INITIAL,
+    messages: makeInitial(first),
   });
+
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
