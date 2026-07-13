@@ -19,7 +19,7 @@ export function BottomNav() {
       aria-label="Primary"
     >
       <div
-        className="rounded-t-[20px] border-t border-white/20 bg-white/10 backdrop-blur-[20px]"
+        className="overflow-hidden rounded-full border border-white/20 bg-white/10 backdrop-blur-[20px]"
         style={{ boxShadow: "0 -4px 30px rgba(0,0,0,0.08)" }}
       >
         <ul className="grid grid-cols-5">
