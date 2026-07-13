@@ -146,15 +146,16 @@ export function MobileMenu() {
         aria-modal="true"
         aria-label="Main navigation"
         className={cn(
-          "fixed inset-x-0 top-14 z-40 mx-auto max-w-md overflow-y-auto bg-white text-gray-900 shadow-xl transition-transform duration-300 ease-in-out md:max-w-3xl lg:max-w-5xl",
+          "fixed inset-x-0 top-14 z-40 mx-auto max-w-md overflow-y-auto border-t border-white/20 bg-white/10 text-gray-900 backdrop-blur-[20px] md:max-w-3xl lg:max-w-5xl",
           "h-[calc(100dvh-3.5rem)]",
-          open ? "translate-y-0" : "-translate-y-[110%]",
+          "transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] will-change-transform",
+          open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-[110%] opacity-0",
         )}
-        // Hide from AT when closed
+        style={{ boxShadow: "0 8px 30px rgba(0,0,0,0.12)" }}
         aria-hidden={!open}
       >
         <nav>
-          <ul className="divide-y divide-gray-200">
+          <ul className="divide-y divide-white/20">
             {ITEMS.map((item) => {
               const hasChildren = !!item.children?.length;
               const isExpanded = expanded === item.label;
@@ -165,12 +166,12 @@ export function MobileMenu() {
                       type="button"
                       onClick={() => setExpanded(isExpanded ? null : item.label)}
                       aria-expanded={isExpanded}
-                      className="flex w-full items-center justify-between px-6 py-5 text-left text-lg font-semibold text-gray-900 hover:bg-gray-50"
+                      className="flex w-full items-center justify-between px-6 py-5 text-left text-lg font-semibold text-gray-900 transition-colors hover:bg-white/20"
                     >
                       <span>{item.label}</span>
                       <ChevronRight
                         className={cn(
-                          "h-5 w-5 text-gray-500 transition-transform duration-300",
+                          "h-5 w-5 text-gray-600 transition-transform duration-300",
                           isExpanded && "rotate-90",
                         )}
                       />
@@ -182,13 +183,13 @@ export function MobileMenu() {
                       )}
                     >
                       <div className="min-h-0">
-                        <ul className="bg-gray-50">
+                        <ul className="bg-white/10">
                           {item.children!.map((sub) => (
                             <li key={sub.label}>
                               <Link
                                 to={sub.to as "/search"}
                                 onClick={close}
-                                className="block px-10 py-3 text-base font-normal text-gray-500 hover:text-gray-900"
+                                className="block px-10 py-3 text-base font-normal text-gray-700 transition-colors hover:text-gray-900"
                               >
                                 {sub.label}
                               </Link>
@@ -205,7 +206,7 @@ export function MobileMenu() {
                   <Link
                     to={item.to as "/"}
                     onClick={close}
-                    className="block px-6 py-5 text-lg font-semibold text-gray-900 hover:bg-gray-50"
+                    className="block px-6 py-5 text-lg font-semibold text-gray-900 transition-colors hover:bg-white/20"
                   >
                     {item.label}
                   </Link>
@@ -215,6 +216,7 @@ export function MobileMenu() {
           </ul>
         </nav>
       </div>
+
 
       {/* Close button inside header sits on top; re-render for focus target */}
       <button
