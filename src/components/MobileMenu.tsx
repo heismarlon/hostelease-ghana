@@ -95,7 +95,7 @@ export function MobileMenu() {
         <button
           ref={openBtnRef}
           type="button"
-          onClick={() => setOpen(true)}
+          onClick={() => setOpen((v) => !v)}
           aria-label="Open menu"
           aria-expanded={open}
           aria-controls="mobile-menu-panel"
