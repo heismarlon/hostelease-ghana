@@ -13,10 +13,8 @@ export const Route = createFileRoute("/_app/profile")({
   component: Profile,
 });
 
-const BOOKINGS = [
-  { hostel: "Amamoma Court", status: "Confirmed", color: "bg-success/15 text-success" },
-  { hostel: "Apewosika Lodge", status: "Completed", color: "bg-muted text-muted-foreground" },
-];
+
+
 
 const THEMES: { id: Theme; label: string }[] = [
   { id: "light", label: "Light" },
