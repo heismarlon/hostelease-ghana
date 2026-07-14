@@ -2,6 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { Heart, MapPin, Star, ShieldCheck } from "lucide-react";
 import { AVAILABILITY_META, formatGHS, type Hostel } from "@/lib/hostels";
 import { cn } from "@/lib/utils";
+import { useSavedHostels } from "@/lib/use-saved";
+
 
 export function HostelCard({ hostel, eager }: { hostel: Hostel; eager?: boolean }) {
   const avail = AVAILABILITY_META[hostel.availability];
