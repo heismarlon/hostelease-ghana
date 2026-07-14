@@ -87,17 +87,32 @@ function Profile() {
 
       <section className="space-y-3 px-5">
         <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Bookings</h2>
-        <div className="overflow-hidden rounded-2xl bg-card shadow-card">
-          {BOOKINGS.map((b, i) => (
-            <div key={b.hostel} className={`flex items-center justify-between px-4 py-3 ${i > 0 ? "border-t border-border" : ""}`}>
-              <div>
-                <p className="text-sm font-semibold">{b.hostel}</p>
-                <p className="text-xs text-muted-foreground">2024/25 academic year</p>
-              </div>
-              <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${b.color}`}>{b.status}</span>
-            </div>
-          ))}
-        </div>
+        {bookings.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-border bg-card p-6 text-center">
+            <p className="text-sm font-semibold">No bookings yet</p>
+            <p className="mt-1 text-xs text-muted-foreground">Reserve a hostel and your bookings will appear here.</p>
+            <Link to="/search" className="mt-3 inline-block rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground">
+              Browse hostels
+            </Link>
+          </div>
+        ) : (
+          <div className="overflow-hidden rounded-2xl bg-card shadow-card">
+            {bookings.map((b, i) => {
+              const completed = new Date(b.checkOut).getTime() < Date.now();
+              const status = completed ? "Completed" : "Confirmed";
+              const cls = completed ? "bg-muted text-muted-foreground" : "bg-success/15 text-success";
+              return (
+                <div key={b.id} className={`flex items-center justify-between px-4 py-3 ${i > 0 ? "border-t border-border" : ""}`}>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold">{b.hostelName}</p>
+                    <p className="text-xs text-muted-foreground">{b.academicYear} academic year</p>
+                  </div>
+                  <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ${cls}`}>{status}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </section>
 
       <section className="space-y-3 px-5">
