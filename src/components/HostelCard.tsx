@@ -2,10 +2,15 @@ import { Link } from "@tanstack/react-router";
 import { Heart, MapPin, Star, ShieldCheck } from "lucide-react";
 import { AVAILABILITY_META, formatGHS, type Hostel } from "@/lib/hostels";
 import { cn } from "@/lib/utils";
+import { useSavedHostels } from "@/lib/use-saved";
+
 
 export function HostelCard({ hostel, eager }: { hostel: Hostel; eager?: boolean }) {
   const avail = AVAILABILITY_META[hostel.availability];
   const full = hostel.availability === "full";
+  const { isSaved, toggle } = useSavedHostels();
+  const saved = isSaved(hostel.id);
+
   return (
     <Link
       to="/hostel/$id"
@@ -27,12 +32,14 @@ export function HostelCard({ hostel, eager }: { hostel: Hostel; eager?: boolean 
           </span>
           <button
             type="button"
-            onClick={(e) => { e.preventDefault(); }}
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(hostel.id); }}
             className="grid h-9 w-9 place-items-center rounded-full bg-card/85 text-foreground backdrop-blur transition-colors hover:bg-card"
-            aria-label="Save"
+            aria-label={saved ? "Remove from saved" : "Save hostel"}
+            aria-pressed={saved}
           >
-            <Heart className="h-4 w-4" />
+            <Heart className={cn("h-4 w-4 transition-colors", saved && "fill-red-500 text-red-500")} />
           </button>
+
         </div>
         {hostel.verified && (
           <span className="absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full bg-primary/90 px-2.5 py-1 text-[11px] font-semibold text-primary-foreground backdrop-blur">

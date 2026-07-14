@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { GraduationCap, Home, Loader2 } from "lucide-react";
+import { GraduationCap, Home, Loader2, Eye, EyeOff } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -21,6 +22,8 @@ function Auth() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
 
   const submit = async (e: React.FormEvent) => {
@@ -122,15 +125,30 @@ function Auth() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <Field
-          label="Password"
-          type="password"
-          placeholder="••••••••"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          minLength={6}
-          required
-        />
+        <label className="block">
+          <span className="text-xs font-semibold">Password</span>
+          <div className="relative mt-1.5">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              minLength={6}
+              required
+              className="w-full rounded-2xl border border-input bg-card px-4 py-3 pr-12 text-sm outline-none focus:ring-2 focus:ring-ring"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-pressed={showPassword}
+              className="absolute inset-y-0 right-2 grid w-9 place-items-center rounded-xl text-muted-foreground hover:text-foreground"
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
+        </label>
+
 
 
         {mode === "signup" && role === "student" && (

@@ -31,7 +31,7 @@ export function BottomNav() {
                   to={to as "/"}
                   className={cn(
                     "relative flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-all duration-200 ease-out",
-                    active ? "text-[#0A1F44]" : "text-neutral-500/60 hover:text-neutral-700",
+                    active ? "text-[#0A1F44]" : "text-neutral-600 hover:text-neutral-800",
                   )}
                 >
                   <span
@@ -42,7 +42,8 @@ export function BottomNav() {
                   >
                     <Icon className="h-[20px] w-[20px]" strokeWidth={active ? 2.5 : 2} />
                   </span>
-                  <span className={cn("transition-opacity duration-200", !active && "opacity-60")}>
+                  <span className="transition-opacity duration-200">
+
                     {label}
                   </span>
                   {active && (
