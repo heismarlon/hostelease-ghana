@@ -135,9 +135,10 @@ function HostelDetail() {
         <div className="rounded-2xl border border-border bg-card p-4 shadow-card">
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Price</p>
           <div className="mt-2 flex items-baseline justify-between">
-            <span className="font-display text-3xl font-bold">{formatGHS(hostel.pricePerSemester)}</span>
-            <span className="text-xs text-muted-foreground">per semester</span>
+            <span className="font-display text-3xl font-bold">{formatGHS(hostel.pricePerSemester * 2)}</span>
+            <span className="text-xs text-muted-foreground">per academic year</span>
           </div>
+          <p className="mt-1 text-xs text-muted-foreground">{formatGHS(hostel.pricePerSemester)} per semester (2 semesters)</p>
           <div className="mt-3 flex items-center justify-between rounded-xl bg-accent px-3 py-2 text-xs">
             <span className="text-muted-foreground">Refundable deposit</span>
             <span className="font-semibold">{formatGHS(hostel.deposit)}</span>
@@ -312,8 +313,8 @@ function HostelDetail() {
       <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md border-t border-border bg-card/95 px-5 py-3 backdrop-blur safe-bottom">
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
-            <p className="font-display text-xl font-bold">{formatGHS(hostel.pricePerSemester)}</p>
-            <p className="text-[11px] text-muted-foreground">per semester · deposit {formatGHS(hostel.deposit)}</p>
+            <p className="font-display text-xl font-bold">{formatGHS(hostel.pricePerSemester * 2)}</p>
+            <p className="text-[11px] text-muted-foreground">per academic year · deposit {formatGHS(hostel.deposit)}</p>
           </div>
           {hostel.availability === "full" ? (
             <button className="rounded-2xl border border-primary px-5 py-3.5 text-sm font-semibold text-primary">

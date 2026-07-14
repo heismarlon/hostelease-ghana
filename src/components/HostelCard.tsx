@@ -62,8 +62,9 @@ export function HostelCard({ hostel, eager }: { hostel: Hostel; eager?: boolean 
         </div>
         <div className="mt-2 flex items-baseline justify-between">
           <div>
-            <span className="font-display text-xl font-bold text-foreground">{formatGHS(hostel.pricePerSemester)}</span>
-            <span className="text-xs text-muted-foreground"> / semester</span>
+            <span className="font-display text-xl font-bold text-foreground">{formatGHS(hostel.pricePerSemester * 2)}</span>
+            <span className="text-xs text-muted-foreground"> / academic year</span>
+            <p className="text-[11px] text-muted-foreground">{formatGHS(hostel.pricePerSemester)} per semester</p>
           </div>
           <span className="text-xs text-muted-foreground">{hostel.reviewsCount} reviews</span>
         </div>

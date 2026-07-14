@@ -40,6 +40,7 @@ function Booking() {
   const { hostel } = Route.useLoaderData() as { hostel: import("@/lib/hostels").Hostel };
   const navigate = useNavigate();
   const [step, setStep] = useState<"summary" | "pay" | "done">("summary");
+  const [term, setTerm] = useState<"year" | "semester">("year");
   const [method, setMethod] = useState<Method>("momo");
   const [momoProvider, setMomoProvider] = useState<(typeof MOMO_PROVIDERS)[number]["id"]>("mtn");
   const [phone, setPhone] = useState("");
@@ -49,7 +50,8 @@ function Booking() {
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvc, setCardCvc] = useState("");
 
-  const subtotal = hostel.pricePerSemester + hostel.deposit;
+  const rent = term === "year" ? hostel.pricePerSemester * 2 : hostel.pricePerSemester;
+  const subtotal = rent + hostel.deposit;
   const serviceFee = Math.round(subtotal * SERVICE_FEE_RATE);
   const total = subtotal + serviceFee;
 
@@ -130,9 +132,37 @@ function Booking() {
             </div>
 
             <div className="rounded-2xl bg-card p-4 shadow-card">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Booking period</p>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setTerm("year")}
+                  className={cn(
+                    "rounded-xl border px-3 py-2 text-left text-xs transition-all",
+                    term === "year" ? "border-primary bg-primary/5 ring-2 ring-primary/20" : "border-border",
+                  )}
+                >
+                  <p className="font-semibold">Academic year</p>
+                  <p className="text-[11px] text-muted-foreground">2 semesters · {formatGHS(hostel.pricePerSemester * 2)}</p>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setTerm("semester")}
+                  className={cn(
+                    "rounded-xl border px-3 py-2 text-left text-xs transition-all",
+                    term === "semester" ? "border-primary bg-primary/5 ring-2 ring-primary/20" : "border-border",
+                  )}
+                >
+                  <p className="font-semibold">1 semester</p>
+                  <p className="text-[11px] text-muted-foreground">{formatGHS(hostel.pricePerSemester)}</p>
+                </button>
+              </div>
+            </div>
+
+            <div className="rounded-2xl bg-card p-4 shadow-card">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Price breakdown</p>
               <dl className="mt-3 space-y-2 text-sm">
-                <Row label="Semester rent" value={formatGHS(hostel.pricePerSemester)} />
+                <Row label={term === "year" ? "Academic year rent" : "Semester rent"} value={formatGHS(rent)} />
                 <Row label="Refundable deposit" value={formatGHS(hostel.deposit)} />
                 <Row label={`HostelEase service fee (${Math.round(SERVICE_FEE_RATE * 100)}%)`} value={formatGHS(serviceFee)} />
                 <div className="my-2 border-t border-border" />
@@ -268,7 +298,7 @@ function Booking() {
               <div className="my-3 border-t border-dashed border-border" />
               <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Fee breakdown</p>
               <dl className="mt-2 space-y-1.5 text-sm">
-                <Row label="Semester rent" value={formatGHS(hostel.pricePerSemester)} muted />
+                <Row label={term === "year" ? "Academic year rent" : "Semester rent"} value={formatGHS(rent)} muted />
                 <Row label="Refundable deposit" value={formatGHS(hostel.deposit)} muted />
                 <Row label={`HostelEase service fee (${Math.round(SERVICE_FEE_RATE * 100)}%)`} value={formatGHS(serviceFee)} muted />
                 <div className="my-1 border-t border-border" />
