@@ -46,8 +46,11 @@ function Compare() {
             </tr>
           </thead>
           <tbody className="text-sm">
-            <Section label="Price / semester">
-              {items.map((h) => <Cell key={h.id}><span className="font-display font-bold">{formatGHS(h.pricePerSemester)}</span></Cell>)}
+            <Section label="Academic year">
+              {items.map((h) => <Cell key={h.id}><span className="font-display font-bold">{formatGHS(h.pricePerSemester * 2)}</span></Cell>)}
+            </Section>
+            <Section label="Per semester">
+              {items.map((h) => <Cell key={h.id}>{formatGHS(h.pricePerSemester)}</Cell>)}
             </Section>
             <Section label="Deposit">{items.map((h) => <Cell key={h.id}>{formatGHS(h.deposit)}</Cell>)}</Section>
             <Section label="Rating">{items.map((h) => <Cell key={h.id}>★ {h.rating}</Cell>)}</Section>
@@ -65,6 +68,7 @@ function Compare() {
           </tbody>
         </table>
       </div>
+      )}
     </div>
   );
 }
