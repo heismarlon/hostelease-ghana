@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { GraduationCap, Home, Loader2 } from "lucide-react";
+import { GraduationCap, Home, Loader2, Eye, EyeOff } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 
