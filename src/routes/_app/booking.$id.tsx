@@ -40,6 +40,7 @@ function Booking() {
   const { hostel } = Route.useLoaderData() as { hostel: import("@/lib/hostels").Hostel };
   const navigate = useNavigate();
   const [step, setStep] = useState<"summary" | "pay" | "done">("summary");
+  const [term, setTerm] = useState<"year" | "semester">("year");
   const [method, setMethod] = useState<Method>("momo");
   const [momoProvider, setMomoProvider] = useState<(typeof MOMO_PROVIDERS)[number]["id"]>("mtn");
   const [phone, setPhone] = useState("");
@@ -49,7 +50,8 @@ function Booking() {
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvc, setCardCvc] = useState("");
 
-  const subtotal = hostel.pricePerSemester + hostel.deposit;
+  const rent = term === "year" ? hostel.pricePerSemester * 2 : hostel.pricePerSemester;
+  const subtotal = rent + hostel.deposit;
   const serviceFee = Math.round(subtotal * SERVICE_FEE_RATE);
   const total = subtotal + serviceFee;
 
