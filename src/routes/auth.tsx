@@ -22,6 +22,8 @@ function Auth() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
 
   const submit = async (e: React.FormEvent) => {
