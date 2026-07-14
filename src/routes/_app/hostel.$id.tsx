@@ -313,8 +313,8 @@ function HostelDetail() {
       <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md border-t border-border bg-card/95 px-5 py-3 backdrop-blur safe-bottom">
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
-            <p className="font-display text-xl font-bold">{formatGHS(hostel.pricePerSemester)}</p>
-            <p className="text-[11px] text-muted-foreground">per semester · deposit {formatGHS(hostel.deposit)}</p>
+            <p className="font-display text-xl font-bold">{formatGHS(hostel.pricePerSemester * 2)}</p>
+            <p className="text-[11px] text-muted-foreground">per academic year · deposit {formatGHS(hostel.deposit)}</p>
           </div>
           {hostel.availability === "full" ? (
             <button className="rounded-2xl border border-primary px-5 py-3.5 text-sm font-semibold text-primary">
