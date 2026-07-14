@@ -124,7 +124,7 @@ function Profile() {
         <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Quick actions</h2>
         <div className="overflow-hidden rounded-2xl bg-card shadow-card">
           <Row icon={User} label="Personal info" to="/personal-info" />
-          <Row icon={Receipt} label="Receipts" to="/receipts" />
+          <Row icon={ReceiptIcon} label="Receipts" to="/receipts" />
           <Row icon={Heart} label="Saved hostels" to="/saved" />
           <Row icon={Users} label="Roommate matching" to="/roommates" />
           <Row icon={CreditCard} label="Payment methods" to="/payments" />
