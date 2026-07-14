@@ -8,6 +8,9 @@ import { useSavedHostels } from "@/lib/use-saved";
 export function HostelCard({ hostel, eager }: { hostel: Hostel; eager?: boolean }) {
   const avail = AVAILABILITY_META[hostel.availability];
   const full = hostel.availability === "full";
+  const { isSaved, toggle } = useSavedHostels();
+  const saved = isSaved(hostel.id);
+
   return (
     <Link
       to="/hostel/$id"
