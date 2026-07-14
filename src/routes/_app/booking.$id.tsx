@@ -298,7 +298,7 @@ function Booking() {
               <div className="my-3 border-t border-dashed border-border" />
               <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Fee breakdown</p>
               <dl className="mt-2 space-y-1.5 text-sm">
-                <Row label="Semester rent" value={formatGHS(hostel.pricePerSemester)} muted />
+                <Row label={term === "year" ? "Academic year rent" : "Semester rent"} value={formatGHS(rent)} muted />
                 <Row label="Refundable deposit" value={formatGHS(hostel.deposit)} muted />
                 <Row label={`HostelEase service fee (${Math.round(SERVICE_FEE_RATE * 100)}%)`} value={formatGHS(serviceFee)} muted />
                 <div className="my-1 border-t border-border" />
