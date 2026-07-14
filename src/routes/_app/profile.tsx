@@ -32,6 +32,11 @@ function Profile() {
   const [referralLink, setReferralLink] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const { profile } = useProfile();
+  const [bookings, setBookings] = useState<Receipt[]>([]);
+
+  useEffect(() => {
+    setBookings(loadReceipts());
+  }, []);
 
 
   const signOut = async () => {
