@@ -195,7 +195,7 @@ function Row({
   value?: string;
   badge?: string;
   danger?: boolean;
-  to?: "/saved" | "/payments" | "/personal-info" | "/receipts" | "/roommates" | "/language";
+  to?: "/saved" | "/payments" | "/personal-info" | "/receipts" | "/roommates" | "/language" | "/admin";
   onClick?: () => void;
 }) {
   const content = (
@@ -213,3 +213,58 @@ function Row({
   if (onClick) return <button type="button" onClick={onClick} className="block w-full text-left border-t border-border first:border-t-0">{content}</button>;
   return <div className="border-t border-border first:border-t-0">{content}</div>;
 }
+
+type Stage = "Requested" | "Confirmed" | "Checked-in" | "Completed";
+const STAGES: Stage[] = ["Requested", "Confirmed", "Checked-in", "Completed"];
+
+function computeStage(r: Receipt): Stage {
+  const now = Date.now();
+  const ci = new Date(r.checkIn).getTime();
+  const co = new Date(r.checkOut).getTime();
+  const week = 7 * 24 * 60 * 60 * 1000;
+  if (now >= co) return "Completed";
+  if (now >= ci) return "Checked-in";
+  if (now >= ci - week) return "Confirmed";
+  return "Requested";
+}
+
+function BookingTimeline({ r }: { r: Receipt }) {
+  const current = computeStage(r);
+  const idx = STAGES.indexOf(current);
+  return (
+    <div className="rounded-2xl bg-card p-4 shadow-card">
+      <div className="mb-3 flex items-start justify-between gap-2">
+        <div className="min-w-0">
+          <p className="truncate text-sm font-semibold">{r.hostelName}</p>
+          <p className="text-[11px] text-muted-foreground">{r.academicYear} · Ref {r.reference}</p>
+        </div>
+        <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-semibold text-primary">{current}</span>
+      </div>
+      <div className="flex items-center">
+        {STAGES.map((s, i) => {
+          const done = i <= idx;
+          return (
+            <div key={s} className="flex flex-1 items-center">
+              <div className="flex flex-col items-center">
+                <span
+                  className={`grid h-6 w-6 place-items-center rounded-full text-[10px] font-bold ${
+                    done ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  {done ? "✓" : i + 1}
+                </span>
+                <span className={`mt-1 text-[9px] font-semibold ${done ? "text-foreground" : "text-muted-foreground"}`}>
+                  {s}
+                </span>
+              </div>
+              {i < STAGES.length - 1 && (
+                <div className={`mx-1 h-0.5 flex-1 ${i < idx ? "bg-primary" : "bg-muted"}`} />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
