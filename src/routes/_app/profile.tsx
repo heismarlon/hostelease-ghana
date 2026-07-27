@@ -112,7 +112,8 @@ function Profile() {
 
 
       <section className="space-y-3 px-5">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Appearance</h2>
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{tr("Appearance")}</h2>
+
         <div className="rounded-2xl bg-card p-3 shadow-card">
           <div className="mb-2 flex items-center gap-2 px-1 text-sm font-medium">
             {theme === "dark" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
@@ -137,17 +138,19 @@ function Profile() {
       </section>
 
       <section className="space-y-2 px-5">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Quick actions</h2>
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{tr("Quick actions")}</h2>
         <div className="overflow-hidden rounded-2xl bg-card shadow-card">
-          <Row icon={User} label="Personal info" to="/personal-info" />
-          <Row icon={ReceiptIcon} label="Receipts" to="/receipts" />
-          <Row icon={Heart} label="Saved hostels" to="/saved" />
-          <Row icon={Users} label="Roommate matching" to="/roommates" />
-          <Row icon={CreditCard} label="Payment methods" to="/payments" />
-          <Row icon={Gift} label="Refer & earn GHS 20" onClick={handleRefer} />
-          <Row icon={Globe} label="Language" to="/language" />
-          <Row icon={LogOut} label="Sign out" danger onClick={signOut} />
+          <Row icon={User} label={tr("Personal info")} to="/personal-info" />
+          <Row icon={ReceiptIcon} label={tr("Receipts")} to="/receipts" />
+          <Row icon={Heart} label={tr("Saved hostels")} to="/saved" />
+          <Row icon={Users} label={tr("Roommate matching")} to="/roommates" />
+          <Row icon={CreditCard} label={tr("Payment methods")} to="/payments" />
+          <Row icon={Gift} label={tr("Refer & earn GHS 20")} onClick={handleRefer} />
+          <Row icon={Globe} label={tr("Language")} to="/language" />
+          {isAdmin && <Row icon={ShieldCheck} label={tr("Admin")} to="/admin" />}
+          <Row icon={LogOut} label={tr("Sign out")} danger onClick={signOut} />
         </div>
+
 
         {referralLink && (
           <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4">
