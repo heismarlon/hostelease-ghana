@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ArrowLeft, MapPin, ShieldCheck, User, Users } from "lucide-react";
-import { formatGHS, HOSTELS, type Hostel } from "@/lib/hostels";
+import { formatGHS, type Hostel } from "@/lib/hostels";
+import { useHostels } from "@/lib/use-hostels";
+
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_app/roommates")({
@@ -22,13 +24,15 @@ const PROFILES = [
 
 function Roommates() {
   const [occupancy, setOccupancy] = useState<Occupancy>("shared");
+  const hostels = useHostels();
 
   const list = useMemo(() => {
     if (occupancy === "single") {
-      return HOSTELS.filter((h) => h.roomTypes.includes("single") || h.roomTypes.includes("self-contained"));
+      return hostels.filter((h) => h.roomTypes.includes("single") || h.roomTypes.includes("self-contained"));
     }
-    return HOSTELS.filter((h) => h.roomTypes.includes("shared"));
-  }, [occupancy]);
+    return hostels.filter((h) => h.roomTypes.includes("shared"));
+  }, [occupancy, hostels]);
+
 
   return (
     <div className="min-h-screen bg-background pb-24">

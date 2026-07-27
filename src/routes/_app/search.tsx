@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ArrowUpDown, Search as SearchIcon, X } from "lucide-react";
-import { AMENITIES, HOSTELS } from "@/lib/hostels";
+import { AMENITIES } from "@/lib/hostels";
+import { useHostels } from "@/lib/use-hostels";
+
 import { HostelCard } from "@/components/HostelCard";
 import { cn } from "@/lib/utils";
 
@@ -28,9 +30,10 @@ function SearchPage() {
   const [rooms, setRooms] = useState<string[]>([]);
   const [amenities, setAmenities] = useState<string[]>([]);
   const [sort, setSort] = useState<(typeof SORTS)[number]["id"]>("rating");
+  const hostels = useHostels();
 
   const results = useMemo(() => {
-    const r = HOSTELS.filter((h) => {
+    const r = hostels.filter((h) => {
       if (q && !`${h.name} ${h.area} ${h.tagline}`.toLowerCase().includes(q.toLowerCase())) return false;
       if (h.pricePerSemester > maxPrice) return false;
       if (rooms.length && !rooms.some((rt) => h.roomTypes.includes(rt as never))) return false;
@@ -41,7 +44,8 @@ function SearchPage() {
     if (sort === "rating") r.sort((a, b) => b.rating - a.rating);
     if (sort === "distance") r.sort((a, b) => a.distanceKm - b.distanceKm);
     return r;
-  }, [q, maxPrice, rooms, amenities, sort]);
+  }, [q, maxPrice, rooms, amenities, sort, hostels]);
+
 
   const toggle = (list: string[], set: (v: string[]) => void, val: string) =>
     set(list.includes(val) ? list.filter((v) => v !== val) : [...list, val]);
