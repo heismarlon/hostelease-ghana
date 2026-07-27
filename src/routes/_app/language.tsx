@@ -9,15 +9,19 @@ export const Route = createFileRoute("/_app/language")({
 
 const LANGUAGES = [
   { code: "en", name: "English", native: "English" },
+  { code: "fr", name: "French", native: "Français" },
+  { code: "es", name: "Spanish", native: "Español" },
   { code: "tw", name: "Twi", native: "Twi (Akan)" },
   { code: "fa", name: "Fante", native: "Mfantse" },
   { code: "ee", name: "Ewe", native: "Eʋegbe" },
   { code: "ga", name: "Ga", native: "Gã" },
   { code: "ha", name: "Hausa", native: "Hausa" },
   { code: "da", name: "Dagbani", native: "Dagbanli" },
-  { code: "fr", name: "French", native: "Français" },
   { code: "ar", name: "Arabic", native: "العربية" },
   { code: "pt", name: "Portuguese", native: "Português" },
+  { code: "de", name: "German", native: "Deutsch" },
+  { code: "sw", name: "Swahili", native: "Kiswahili" },
+  { code: "zh", name: "Chinese", native: "中文" },
 ];
 
 const KEY = "he_language";
@@ -32,8 +36,12 @@ function LanguagePage() {
 
   const choose = (code: string) => {
     setSelected(code);
-    if (typeof window !== "undefined") window.localStorage.setItem(KEY, code);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(KEY, code);
+      window.dispatchEvent(new Event("he-language-change"));
+    }
   };
+
 
   return (
     <div className="pb-6">

@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Home, Search, Heart, MessageCircle, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 const TABS: ReadonlyArray<{ to: string; label: string; icon: typeof Home; exact?: boolean }> = [
   { to: "/", label: "Home", icon: Home, exact: true },
@@ -12,6 +13,8 @@ const TABS: ReadonlyArray<{ to: string; label: string; icon: typeof Home; exact?
 
 export function BottomNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const tr = useT();
+
 
   return (
     <nav
@@ -48,7 +51,7 @@ export function BottomNav() {
                       strokeWidth={active ? 2.6 : 2}
                     />
                   </span>
-                  <span className="transition-opacity duration-200">{label}</span>
+                  <span className="transition-opacity duration-200">{tr(label)}</span>
                   {active && (
                     <span
                       aria-hidden
