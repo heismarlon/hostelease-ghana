@@ -34,6 +34,8 @@ function Profile() {
   const [copied, setCopied] = useState(false);
   const { profile } = useProfile();
   const [bookings, setBookings] = useState<Receipt[]>([]);
+  const tr = useT();
+  const isAdmin = useIsAdmin();
 
   useEffect(() => {
     setBookings(loadReceipts());
@@ -42,9 +44,14 @@ function Profile() {
 
   const signOut = async () => {
     await supabase.auth.signOut();
-    if (typeof window !== "undefined") window.localStorage.removeItem("he_signed_in");
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("he_signed_in");
+      window.localStorage.removeItem("he_role");
+      window.dispatchEvent(new Event("he-role-change"));
+    }
     navigate({ to: "/auth" });
   };
+
 
   const handleRefer = () => {
     const origin = typeof window !== "undefined" ? window.location.origin : "https://hostelease.app";
@@ -87,7 +94,7 @@ function Profile() {
       </header>
 
       <section className="space-y-3 px-5">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Bookings</h2>
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{tr("Bookings")}</h2>
         {bookings.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border bg-card p-6 text-center">
             <p className="text-sm font-semibold">No bookings yet</p>
@@ -97,24 +104,12 @@ function Profile() {
             </Link>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-2xl bg-card shadow-card">
-            {bookings.map((b, i) => {
-              const completed = new Date(b.checkOut).getTime() < Date.now();
-              const status = completed ? "Completed" : "Confirmed";
-              const cls = completed ? "bg-muted text-muted-foreground" : "bg-success/15 text-success";
-              return (
-                <div key={b.id} className={`flex items-center justify-between px-4 py-3 ${i > 0 ? "border-t border-border" : ""}`}>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold">{b.hostelName}</p>
-                    <p className="text-xs text-muted-foreground">{b.academicYear} academic year</p>
-                  </div>
-                  <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ${cls}`}>{status}</span>
-                </div>
-              );
-            })}
+          <div className="space-y-3">
+            {bookings.map((b) => <BookingTimeline key={b.id} r={b} />)}
           </div>
         )}
       </section>
+
 
       <section className="space-y-3 px-5">
         <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Appearance</h2>
