@@ -5,6 +5,8 @@ import { useTheme, type Theme } from "@/lib/theme";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile, initials } from "@/lib/use-profile";
 import { loadReceipts, type Receipt } from "@/lib/receipts";
+import { useT } from "@/lib/i18n";
+import { useIsAdmin } from "@/lib/use-hostels";
 
 
 
@@ -12,6 +14,7 @@ export const Route = createFileRoute("/_app/profile")({
   head: () => ({ meta: [{ title: "Profile — HostelEase" }] }),
   component: Profile,
 });
+
 
 
 
@@ -31,6 +34,8 @@ function Profile() {
   const [copied, setCopied] = useState(false);
   const { profile } = useProfile();
   const [bookings, setBookings] = useState<Receipt[]>([]);
+  const tr = useT();
+  const isAdmin = useIsAdmin();
 
   useEffect(() => {
     setBookings(loadReceipts());
@@ -39,9 +44,14 @@ function Profile() {
 
   const signOut = async () => {
     await supabase.auth.signOut();
-    if (typeof window !== "undefined") window.localStorage.removeItem("he_signed_in");
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("he_signed_in");
+      window.localStorage.removeItem("he_role");
+      window.dispatchEvent(new Event("he-role-change"));
+    }
     navigate({ to: "/auth" });
   };
+
 
   const handleRefer = () => {
     const origin = typeof window !== "undefined" ? window.location.origin : "https://hostelease.app";
@@ -84,7 +94,7 @@ function Profile() {
       </header>
 
       <section className="space-y-3 px-5">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Bookings</h2>
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{tr("Bookings")}</h2>
         {bookings.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border bg-card p-6 text-center">
             <p className="text-sm font-semibold">No bookings yet</p>
@@ -94,27 +104,16 @@ function Profile() {
             </Link>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-2xl bg-card shadow-card">
-            {bookings.map((b, i) => {
-              const completed = new Date(b.checkOut).getTime() < Date.now();
-              const status = completed ? "Completed" : "Confirmed";
-              const cls = completed ? "bg-muted text-muted-foreground" : "bg-success/15 text-success";
-              return (
-                <div key={b.id} className={`flex items-center justify-between px-4 py-3 ${i > 0 ? "border-t border-border" : ""}`}>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold">{b.hostelName}</p>
-                    <p className="text-xs text-muted-foreground">{b.academicYear} academic year</p>
-                  </div>
-                  <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ${cls}`}>{status}</span>
-                </div>
-              );
-            })}
+          <div className="space-y-3">
+            {bookings.map((b) => <BookingTimeline key={b.id} r={b} />)}
           </div>
         )}
       </section>
 
+
       <section className="space-y-3 px-5">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Appearance</h2>
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{tr("Appearance")}</h2>
+
         <div className="rounded-2xl bg-card p-3 shadow-card">
           <div className="mb-2 flex items-center gap-2 px-1 text-sm font-medium">
             {theme === "dark" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
@@ -139,17 +138,19 @@ function Profile() {
       </section>
 
       <section className="space-y-2 px-5">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Quick actions</h2>
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{tr("Quick actions")}</h2>
         <div className="overflow-hidden rounded-2xl bg-card shadow-card">
-          <Row icon={User} label="Personal info" to="/personal-info" />
-          <Row icon={ReceiptIcon} label="Receipts" to="/receipts" />
-          <Row icon={Heart} label="Saved hostels" to="/saved" />
-          <Row icon={Users} label="Roommate matching" to="/roommates" />
-          <Row icon={CreditCard} label="Payment methods" to="/payments" />
-          <Row icon={Gift} label="Refer & earn GHS 20" onClick={handleRefer} />
-          <Row icon={Globe} label="Language" to="/language" />
-          <Row icon={LogOut} label="Sign out" danger onClick={signOut} />
+          <Row icon={User} label={tr("Personal info")} to="/personal-info" />
+          <Row icon={ReceiptIcon} label={tr("Receipts")} to="/receipts" />
+          <Row icon={Heart} label={tr("Saved hostels")} to="/saved" />
+          <Row icon={Users} label={tr("Roommate matching")} to="/roommates" />
+          <Row icon={CreditCard} label={tr("Payment methods")} to="/payments" />
+          <Row icon={Gift} label={tr("Refer & earn GHS 20")} onClick={handleRefer} />
+          <Row icon={Globe} label={tr("Language")} to="/language" />
+          {isAdmin && <Row icon={ShieldCheck} label={tr("Admin")} to="/admin" />}
+          <Row icon={LogOut} label={tr("Sign out")} danger onClick={signOut} />
         </div>
+
 
         {referralLink && (
           <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4">
@@ -194,7 +195,7 @@ function Row({
   value?: string;
   badge?: string;
   danger?: boolean;
-  to?: "/saved" | "/payments" | "/personal-info" | "/receipts" | "/roommates" | "/language";
+  to?: "/saved" | "/payments" | "/personal-info" | "/receipts" | "/roommates" | "/language" | "/admin";
   onClick?: () => void;
 }) {
   const content = (
@@ -212,3 +213,58 @@ function Row({
   if (onClick) return <button type="button" onClick={onClick} className="block w-full text-left border-t border-border first:border-t-0">{content}</button>;
   return <div className="border-t border-border first:border-t-0">{content}</div>;
 }
+
+type Stage = "Requested" | "Confirmed" | "Checked-in" | "Completed";
+const STAGES: Stage[] = ["Requested", "Confirmed", "Checked-in", "Completed"];
+
+function computeStage(r: Receipt): Stage {
+  const now = Date.now();
+  const ci = new Date(r.checkIn).getTime();
+  const co = new Date(r.checkOut).getTime();
+  const week = 7 * 24 * 60 * 60 * 1000;
+  if (now >= co) return "Completed";
+  if (now >= ci) return "Checked-in";
+  if (now >= ci - week) return "Confirmed";
+  return "Requested";
+}
+
+function BookingTimeline({ r }: { r: Receipt }) {
+  const current = computeStage(r);
+  const idx = STAGES.indexOf(current);
+  return (
+    <div className="rounded-2xl bg-card p-4 shadow-card">
+      <div className="mb-3 flex items-start justify-between gap-2">
+        <div className="min-w-0">
+          <p className="truncate text-sm font-semibold">{r.hostelName}</p>
+          <p className="text-[11px] text-muted-foreground">{r.academicYear} · Ref {r.reference}</p>
+        </div>
+        <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-semibold text-primary">{current}</span>
+      </div>
+      <div className="flex items-center">
+        {STAGES.map((s, i) => {
+          const done = i <= idx;
+          return (
+            <div key={s} className="flex flex-1 items-center">
+              <div className="flex flex-col items-center">
+                <span
+                  className={`grid h-6 w-6 place-items-center rounded-full text-[10px] font-bold ${
+                    done ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  {done ? "✓" : i + 1}
+                </span>
+                <span className={`mt-1 text-[9px] font-semibold ${done ? "text-foreground" : "text-muted-foreground"}`}>
+                  {s}
+                </span>
+              </div>
+              {i < STAGES.length - 1 && (
+                <div className={`mx-1 h-0.5 flex-1 ${i < idx ? "bg-primary" : "bg-muted"}`} />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+

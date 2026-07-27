@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
-import { HOSTELS } from "@/lib/hostels";
 import { HostelCard } from "@/components/HostelCard";
 import { useSavedHostels } from "@/lib/use-saved";
+import { useHostels } from "@/lib/use-hostels";
 
 export const Route = createFileRoute("/_app/saved")({
   head: () => ({ meta: [{ title: "Saved — HostelEase" }] }),
@@ -11,7 +11,9 @@ export const Route = createFileRoute("/_app/saved")({
 
 function Saved() {
   const { ids } = useSavedHostels();
-  const saved = HOSTELS.filter((h) => ids.includes(h.id));
+  const hostels = useHostels();
+  const saved = hostels.filter((h) => ids.includes(h.id));
+
 
   return (
     <div className="space-y-5 pb-6">

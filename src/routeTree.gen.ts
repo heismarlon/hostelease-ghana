@@ -24,6 +24,7 @@ import { Route as AppPaymentsRouteImport } from './routes/_app/payments'
 import { Route as AppMessagesRouteImport } from './routes/_app/messages'
 import { Route as AppLanguageRouteImport } from './routes/_app/language'
 import { Route as AppCompareRouteImport } from './routes/_app/compare'
+import { Route as AppAdminRouteImport } from './routes/_app/admin'
 import { Route as AppHostelIdRouteImport } from './routes/_app/hostel.$id'
 import { Route as AppBookingIdRouteImport } from './routes/_app/booking.$id'
 
@@ -101,6 +102,11 @@ const AppCompareRoute = AppCompareRouteImport.update({
   path: '/compare',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppHostelIdRoute = AppHostelIdRouteImport.update({
   id: '/hostel/$id',
   path: '/hostel/$id',
@@ -116,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
+  '/admin': typeof AppAdminRoute
   '/compare': typeof AppCompareRoute
   '/language': typeof AppLanguageRoute
   '/messages': typeof AppMessagesRoute
@@ -133,6 +140,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
+  '/admin': typeof AppAdminRoute
   '/compare': typeof AppCompareRoute
   '/language': typeof AppLanguageRoute
   '/messages': typeof AppMessagesRoute
@@ -153,6 +161,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
+  '/_app/admin': typeof AppAdminRoute
   '/_app/compare': typeof AppCompareRoute
   '/_app/language': typeof AppLanguageRoute
   '/_app/messages': typeof AppMessagesRoute
@@ -174,6 +183,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/onboarding'
+    | '/admin'
     | '/compare'
     | '/language'
     | '/messages'
@@ -191,6 +201,7 @@ export interface FileRouteTypes {
   to:
     | '/auth'
     | '/onboarding'
+    | '/admin'
     | '/compare'
     | '/language'
     | '/messages'
@@ -210,6 +221,7 @@ export interface FileRouteTypes {
     | '/_app'
     | '/auth'
     | '/onboarding'
+    | '/_app/admin'
     | '/_app/compare'
     | '/_app/language'
     | '/_app/messages'
@@ -340,6 +352,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCompareRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/admin': {
+      id: '/_app/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/hostel/$id': {
       id: '/_app/hostel/$id'
       path: '/hostel/$id'
@@ -358,6 +377,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRoute
   AppCompareRoute: typeof AppCompareRoute
   AppLanguageRoute: typeof AppLanguageRoute
   AppMessagesRoute: typeof AppMessagesRoute
@@ -374,6 +394,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRoute,
   AppCompareRoute: AppCompareRoute,
   AppLanguageRoute: AppLanguageRoute,
   AppMessagesRoute: AppMessagesRoute,
