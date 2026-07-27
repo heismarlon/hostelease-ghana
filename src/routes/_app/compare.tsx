@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, Heart, X } from "lucide-react";
-import { AMENITIES, formatGHS, HOSTELS } from "@/lib/hostels";
+import { AMENITIES, formatGHS } from "@/lib/hostels";
 import { useSavedHostels } from "@/lib/use-saved";
+import { useHostels } from "@/lib/use-hostels";
 
 export const Route = createFileRoute("/_app/compare")({
   head: () => ({ meta: [{ title: "Compare hostels — HostelEase" }] }),
@@ -10,7 +11,9 @@ export const Route = createFileRoute("/_app/compare")({
 
 function Compare() {
   const { ids } = useSavedHostels();
-  const items = HOSTELS.filter((h) => ids.includes(h.id));
+  const hostels = useHostels();
+  const items = hostels.filter((h) => ids.includes(h.id));
+
   return (
     <div className="pb-6">
       <header className="px-5 pb-3 pt-12">

@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bell, Laptop, MapPin, SlidersHorizontal, Sparkles } from "lucide-react";
-import { HOSTELS } from "@/lib/hostels";
 import { HostelCard } from "@/components/HostelCard";
 import { useProfile, firstName } from "@/lib/use-profile";
+import { useHostels } from "@/lib/use-hostels";
+import { useT } from "@/lib/i18n";
 
 
 export const Route = createFileRoute("/_app/")({
@@ -16,10 +17,13 @@ export const Route = createFileRoute("/_app/")({
 });
 
 function Discover() {
-  const popular = HOSTELS;
-  const nearby = [...HOSTELS].sort((a, b) => a.distanceKm - b.distanceKm).slice(0, 3);
+  const hostels = useHostels();
+  const popular = hostels;
+  const nearby = [...hostels].sort((a, b) => a.distanceKm - b.distanceKm).slice(0, 3);
   const { profile } = useProfile();
   const first = firstName(profile?.full_name) || "there";
+  const tr = useT();
+
 
   const openDesktop = () => {
     if (typeof window === "undefined") return;
@@ -43,8 +47,9 @@ function Discover() {
               {profile?.university || "University of Cape Coast"}
             </p>
             <h1 className="mt-1 font-display text-2xl font-bold leading-tight">
-              Hi {first}, find your<br />next home <span className="text-gold">near campus</span>
+              {tr("Hi")} {first}, find your<br />next home <span className="text-gold">near campus</span>
             </h1>
+
 
           </div>
           <button type="button" className="grid h-10 w-10 place-items-center rounded-full bg-white/10" aria-label="Notifications">
