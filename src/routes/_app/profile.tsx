@@ -5,6 +5,8 @@ import { useTheme, type Theme } from "@/lib/theme";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile, initials } from "@/lib/use-profile";
 import { loadReceipts, type Receipt } from "@/lib/receipts";
+import { useT } from "@/lib/i18n";
+import { useIsAdmin } from "@/lib/use-hostels";
 
 
 
@@ -12,6 +14,7 @@ export const Route = createFileRoute("/_app/profile")({
   head: () => ({ meta: [{ title: "Profile — HostelEase" }] }),
   component: Profile,
 });
+
 
 
 
