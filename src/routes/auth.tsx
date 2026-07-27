@@ -161,13 +161,26 @@ function Auth() {
           </div>
         </label>
 
-
+        {mode === "login" && (
+          <label className="flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-xs">
+            <input
+              type="checkbox"
+              checked={adminLogin}
+              onChange={(e) => setAdminLogin(e.target.checked)}
+              className="h-4 w-4 accent-primary"
+            />
+            <ShieldCheck className="h-3.5 w-3.5 text-primary" />
+            <span className="font-semibold">Sign in as admin</span>
+            <span className="text-muted-foreground">— manage hostels & app content</span>
+          </label>
+        )}
 
         {mode === "signup" && role === "student" && (
           <p className="rounded-xl bg-secondary px-3 py-2 text-[11px] text-muted-foreground">
             We verify student emails ending in <span className="font-semibold">@stu.ucc.edu.gh</span> automatically. You can also upload a student ID later.
           </p>
         )}
+
 
         {error && (
           <p className="rounded-xl bg-destructive/10 px-3 py-2 text-[12px] text-destructive">{error}</p>
