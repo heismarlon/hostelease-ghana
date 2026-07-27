@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { GraduationCap, Home, Loader2, Eye, EyeOff } from "lucide-react";
+import { GraduationCap, Home, Loader2, Eye, EyeOff, ShieldCheck } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,9 +10,13 @@ export const Route = createFileRoute("/auth")({
   component: Auth,
 });
 
+type Role = "student" | "owner" | "admin";
+
 function Auth() {
-  const [role, setRole] = useState<"student" | "owner">("student");
+  const [role, setRole] = useState<Role>("student");
   const [mode, setMode] = useState<"login" | "signup">("signup");
+  const [adminLogin, setAdminLogin] = useState(false);
+
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [university, setUniversity] = useState("University of Cape Coast (UCC)");
@@ -69,7 +73,12 @@ function Auth() {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
       }
-      if (typeof window !== "undefined") window.localStorage.setItem("he_signed_in", "1");
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem("he_signed_in", "1");
+        const effectiveRole = mode === "signup" ? role : (adminLogin ? "admin" : "student");
+        window.localStorage.setItem("he_role", effectiveRole);
+        window.dispatchEvent(new Event("he-role-change"));
+      }
       navigate({ to: "/" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
@@ -77,6 +86,7 @@ function Auth() {
       setLoading(false);
     }
   };
+
 
 
   return (
@@ -94,12 +104,14 @@ function Auth() {
       {mode === "signup" && (
         <div className="mt-6">
           <p className="mb-2 text-xs font-semibold">I am a…</p>
-          <div className="grid grid-cols-2 gap-2">
-            <RoleCard active={role === "student"} onClick={() => setRole("student")} icon={GraduationCap} label="Student" sub="Looking for a hostel" />
-            <RoleCard active={role === "owner"} onClick={() => setRole("owner")} icon={Home} label="Hostel Owner" sub="Listing rooms" />
+          <div className="grid grid-cols-3 gap-2">
+            <RoleCard active={role === "student"} onClick={() => setRole("student")} icon={GraduationCap} label="Student" sub="Booking a hostel" />
+            <RoleCard active={role === "owner"} onClick={() => setRole("owner")} icon={Home} label="Owner" sub="Listing rooms" />
+            <RoleCard active={role === "admin"} onClick={() => setRole("admin")} icon={ShieldCheck} label="Admin" sub="Manage the app" />
           </div>
         </div>
       )}
+
 
       <form className="mt-6 space-y-3" onSubmit={submit}>
         {mode === "signup" && (
